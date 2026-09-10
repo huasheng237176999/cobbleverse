@@ -1,0 +1,1467 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cobbleverse 神獸攻略｜生成條件與特殊建築</title>
+  <meta name="description" content="Cobbleverse 神獸自然生成條件、天氣時間、特殊建築與召喚前置的繁體中文攻略。">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18222b;
+      --muted: #5d6a72;
+      --paper: #fbfaf7;
+      --surface: #ffffff;
+      --line: #d9e0df;
+      --teal: #147d79;
+      --teal-soft: #dff3ef;
+      --coral: #c85f46;
+      --amber: #c98b2d;
+      --violet: #6b5aa6;
+      --shadow: 0 10px 30px rgba(20, 38, 42, .08);
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    a { color: var(--teal); }
+    .hero {
+      position: relative;
+      min-height: 300px;
+      display: flex;
+      align-items: end;
+      background: url("https://www.lumyverse.com/wp-content/uploads/COBBLEVERSE-Team-Rocket-Tower-1536x864.jpg") center 44% / cover;
+      color: #fff;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-bottom: 5px solid var(--coral);
+      pointer-events: none;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 25, 33, .68);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 54px 0 38px;
+    }
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #bfe8e0;
+      font-size: .85rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, h4 { line-height: 1.25; }
+    h1 { margin: 0; max-width: 760px; font-size: clamp(2rem, 5vw, 3.7rem); }
+    .hero-lede { max-width: 820px; margin: 16px 0 0; color: #f0f5f4; font-size: 1.05rem; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 4px 11px;
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 999px;
+      background: rgba(5, 20, 27, .48);
+      color: #fff;
+      font-size: .87rem;
+    }
+    main { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+    .notice {
+      margin: 24px 0 18px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--amber);
+      background: #fff5de;
+      color: #604713;
+    }
+    .notice strong { color: #4d3710; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0 26px;
+    }
+    .stat {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+    }
+    .stat-label { color: var(--muted); font-size: .85rem; }
+    .stat-value { display: block; margin-top: 3px; color: var(--teal); font-size: 1.75rem; font-weight: 700; }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 14px 0 12px;
+      background: rgba(251, 250, 247, .95);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .tab {
+      min-height: 42px;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+    }
+    .tab[aria-selected="true"] { border-color: var(--teal); background: var(--teal); color: #fff; }
+    .filters {
+      display: grid;
+      grid-template-columns: minmax(260px, 2fr) repeat(4, minmax(140px, 1fr)) auto;
+      gap: 9px;
+      align-items: end;
+    }
+    label { display: block; color: var(--muted); font-size: .8rem; }
+    input, select, button { font: inherit; }
+    input[type="search"], select {
+      width: 100%;
+      min-height: 42px;
+      margin-top: 4px;
+      padding: 8px 11px;
+      border: 1px solid #bfcac8;
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink);
+    }
+    input[type="search"]:focus, select:focus, button:focus-visible, summary:focus-visible, a:focus-visible {
+      outline: 3px solid rgba(20, 125, 121, .28);
+      outline-offset: 2px;
+    }
+    .clear-btn {
+      min-height: 42px;
+      padding: 8px 13px;
+      border: 1px solid var(--coral);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--coral);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .result-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 18px 0 12px;
+    }
+    .result-line h2 { margin: 0; font-size: 1.35rem; }
+    #result-count { color: var(--muted); font-size: .92rem; }
+    .card-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding-bottom: 36px;
+    }
+    .entry {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--teal);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 4px 18px rgba(20, 38, 42, .055);
+      overflow: clip;
+    }
+    .entry.ultra { border-top-color: var(--violet); }
+    .entry.building { border-top-color: var(--coral); }
+    .entry summary {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 15px 16px 13px;
+      cursor: pointer;
+      list-style: none;
+    }
+    .entry summary::-webkit-details-marker { display: none; }
+    .entry summary::after { content: "＋"; flex: 0 0 auto; color: var(--muted); font-size: 1.2rem; line-height: 1; }
+    .entry[open] summary::after { content: "－"; }
+    .entry-heading { display: flex; align-items: flex-start; gap: 10px; min-width: 0; }
+    .pokemon-thumb {
+      position: relative;
+      flex: 0 0 52px;
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: linear-gradient(145deg, #eff8f6, #f8fbfa);
+      overflow: hidden;
+    }
+    .pokemon-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 4px;
+    }
+    .pokemon-art-fallback {
+      display: none;
+      color: var(--teal);
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+    .entry-title { min-width: 0; }
+    .entry-name { margin: 0; font-size: 1.16rem; overflow-wrap: anywhere; }
+    .entry-name .zh { color: var(--teal); font-weight: 500; }
+    .building .entry-name .zh { color: var(--coral); }
+    .subline { margin-top: 5px; color: var(--muted); font-size: .86rem; }
+    .badges { display: flex; flex-wrap: wrap; justify-content: end; gap: 5px; flex: 0 0 auto; max-width: 46%; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      color: #145e5a;
+      font-size: .74rem;
+      white-space: nowrap;
+    }
+    .badge.rarity { background: #fff0d5; color: #785213; }
+    .badge.ultra { background: #ede8fb; color: #514481; }
+    .badge.build { background: #fde7e1; color: #873b29; }
+    .badge.wild { background: #e4f4e7; color: #28633a; }
+    .badge.route { background: #e7eefb; color: #3c4f7c; }
+    .entry-body { padding: 0 16px 17px; border-top: 1px solid var(--line); }
+    .detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding-top: 14px; }
+    .detail-block { min-width: 0; }
+    .detail-block.full { grid-column: 1 / -1; }
+    .detail-block h4 { margin: 0 0 6px; color: var(--ink); font-size: .92rem; }
+    .lang-row { margin: 6px 0 0; padding: 7px 9px; border-radius: 6px; overflow-wrap: anywhere; }
+    .lang-row.original { background: #f1f4f3; color: #39464b; }
+    .lang-row.translation { background: #eff8f6; color: #1f625e; }
+    .lang-label { display: inline-block; margin-right: 6px; color: var(--muted); font-size: .73rem; font-weight: 700; letter-spacing: .04em; }
+    .natural-box {
+      margin-top: 13px;
+      padding: 11px 12px;
+      border-left: 3px solid var(--amber);
+      background: #fffaf0;
+    }
+    .natural-box h4 { margin: 0 0 5px; color: #72531d; font-size: .9rem; }
+    .natural-box p { margin: 4px 0; overflow-wrap: anywhere; }
+    .structure-link { margin-top: 11px; padding-top: 10px; border-top: 1px dashed var(--line); color: var(--coral); font-size: .86rem; }
+    .cross-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px 12px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--line);
+      font-size: .86rem;
+    }
+    .cross-links strong { color: var(--ink); }
+    .cross-links a { overflow-wrap: anywhere; }
+    .route-callout {
+      margin-top: 13px;
+      padding: 10px 12px;
+      border: 1px solid #f0c9be;
+      border-radius: 7px;
+      background: #fff7f4;
+      color: #713728;
+      font-size: .86rem;
+    }
+    .route-callout p { margin: 3px 0; overflow-wrap: anywhere; }
+    .route-callout .callout-label { color: var(--coral); font-weight: 700; }
+    .empty {
+      grid-column: 1 / -1;
+      padding: 34px 18px;
+      border: 1px dashed #bfcac8;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.55);
+      color: var(--muted);
+      text-align: center;
+    }
+    footer {
+      margin-top: 10px;
+      padding: 26px 0 42px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .88rem;
+    }
+    footer p { margin: 7px 0; }
+    .source-list { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+    .source-list a { overflow-wrap: anywhere; }
+    @media (max-width: 900px) {
+      .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filters .search-field { grid-column: 1 / -1; }
+      .clear-btn { width: 100%; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 680px) {
+      .hero-inner, main { width: min(100% - 24px, 1180px); }
+      .hero { min-height: 340px; }
+      .stats { grid-template-columns: 1fr; }
+      .card-list { grid-template-columns: 1fr; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .detail-block.full { grid-column: auto; }
+      .filters { grid-template-columns: 1fr; }
+      .filters .search-field { grid-column: auto; }
+      .badges { max-width: 42%; }
+      .pokemon-thumb { flex-basis: 46px; width: 46px; height: 46px; }
+    }
+    @media print {
+      .toolbar { position: static; background: #fff; }
+      .hero { min-height: 220px; }
+      .card-list { grid-template-columns: 1fr; }
+      .entry { break-inside: avoid; box-shadow: none; }
+      .entry:not([open]) .entry-body { display: block; }
+      .clear-btn, .tabs, .filters { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Cobbleverse · Cobblemon 1.7.3</p>
+      <h1>Cobbleverse 神獸攻略</h1>
+      <p class="hero-lede">把自然生成、天氣／時間限制、道具前置與特殊神獸建築集中在一個容易查找的頁面。英文原文保留，旁邊提供繁體中文解讀。</p>
+      <div class="hero-meta">
+        <span class="hero-chip">Minecraft 1.21.1 · Fabric</span>
+        <span class="hero-chip">查詢日期：2026-09-10</span>
+        <span class="hero-chip">至少 4 GB RAM · 建議 6 GB+</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="notice">
+      <strong>使用提醒：</strong>「可自然野外生成」是依來源生成表列出具體生態域的資料整理；若同一隻神獸也有建築、祭壇或召喚道具路線，卡片會同時標示兩種方式。實際遭遇仍可能受區域 datapack、冠軍進度與版本差異影響，遇到結構相關條件時請一併查看「神獸建築表」。
+    </div>
+
+    <section class="stats" aria-label="資料統計">
+      <div class="stat"><span class="stat-label">傳說／幻之寶可夢</span><strong class="stat-value" id="legendary-count">93</strong></div>
+      <div class="stat"><span class="stat-label">究極異獸</span><strong class="stat-value" id="ultra-count">11</strong></div>
+      <div class="stat"><span class="stat-label">列有野外路線</span><strong class="stat-value" id="wild-count">0</strong></div>
+      <div class="stat"><span class="stat-label">特殊生成建築</span><strong class="stat-value" id="building-count">41</strong></div>
+    </section>
+
+    <section class="toolbar" aria-label="攻略查找工具">
+      <div class="tabs" role="tablist" aria-label="攻略分類">
+        <button class="tab" id="spawn-tab" type="button" role="tab" aria-selected="true" aria-controls="spawn-panel">神獸生成條件</button>
+        <button class="tab" id="wild-tab" type="button" role="tab" aria-selected="false" aria-controls="spawn-panel">可自然野外生成</button>
+        <button class="tab" id="building-tab" type="button" role="tab" aria-selected="false" aria-controls="building-panel">神獸建築表</button>
+      </div>
+      <div class="filters">
+        <label class="search-field">搜尋寶可夢、中文名、生態域、天氣、建築或道具
+          <input id="search" type="search" placeholder="例如：Mewtwo、超夢、Badlands、Thunderstorm、Team Rocket Tower" autocomplete="off">
+        </label>
+        <label>分類
+          <select id="category-filter">
+            <option value="all">全部</option>
+            <option value="legendary">傳說／幻之</option>
+            <option value="ultra-beast">究極異獸</option>
+          </select>
+        </label>
+        <label>取得方式
+          <select id="acquisition-filter">
+            <option value="all">全部路線</option>
+            <option value="wild">可自然野外生成</option>
+            <option value="structure">建築／特殊取得</option>
+          </select>
+        </label>
+        <label>世代
+          <select id="generation-filter"><option value="all">全部世代</option></select>
+        </label>
+        <label>排序
+          <select id="sort-filter">
+            <option value="name">名稱 A-Z</option>
+            <option value="generation" selected>世代順序</option>
+            <option value="rarity">稀有度</option>
+          </select>
+        </label>
+        <button class="clear-btn" id="clear" type="button">清除條件</button>
+      </div>
+    </section>
+
+    <section id="spawn-panel" role="tabpanel" aria-labelledby="spawn-tab">
+      <div class="result-line">
+        <h2>自然生成與取得條件</h2>
+        <span id="result-count" aria-live="polite"></span>
+      </div>
+      <div class="card-list" id="spawn-list"></div>
+    </section>
+
+    <section id="building-panel" role="tabpanel" aria-labelledby="building-tab" hidden>
+      <div class="result-line">
+        <h2>特殊生成建築與召喚前置</h2>
+        <span id="building-result-count" aria-live="polite"></span>
+      </div>
+      <div class="card-list" id="building-list"></div>
+    </section>
+
+    <footer>
+      <p>資料以 LUMYVERSE 的 CurseForge／Cobbleverse Wiki 公開頁面整理，中文翻譯是攻略用直譯；自訂生態域請以遊戲內英文名稱或 ID 為準。</p>
+      <div class="source-list">
+        <a href="https://www.curseforge.com/minecraft/modpacks/cobbleverse-cobblemon" target="_blank" rel="noopener">CurseForge 整合包頁面</a>
+        <a href="https://www.lumyverse.com/cobbleverse/all-pokemon-spawn-in-cobbleverse/" target="_blank" rel="noopener">All Pokémon Spawn</a>
+        <a href="https://www.lumyverse.com/cobbleverse/exclusive-structures-in-cobbleverse/" target="_blank" rel="noopener">Exclusive Structures</a>
+        <a href="https://www.lumyverse.com/cobbleverse/how-to-catch-all-legendary-mythical-pokemon/" target="_blank" rel="noopener">Legendary／Mythical 捕捉頁</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const DATA = {"buildings":[{"structure":"Articuno Tower","pokemonOriginal":"Articuno","biomeOriginal":"Snowy Plains","extraOriginal":"The summoning feather/item is found inside the tower.","pokemonZh":"Articuno"},{"structure":"Zapdos Tower","pokemonOriginal":"Zapdos","biomeOriginal":"Stony Shore","extraOriginal":"The summoning feather/item is found inside the tower.","pokemonZh":"Zapdos"},{"structure":"Moltres Tower","pokemonOriginal":"Moltres","biomeOriginal":"Nether Wastes","extraOriginal":"The summoning feather/item is found inside the tower.","pokemonZh":"Moltres"},{"structure":"Team Rocket Tower","pokemonOriginal":"Mewtwo","biomeOriginal":"Badlands","extraOriginal":"Ancient DNA + Cloning Catalyst; use a Fossil Resurrection Machine. The Meowth Balloon variant drops Radiant Cloning Catalyst for a guaranteed Shiny Mewtwo.","pokemonZh":"Mewtwo"},{"structure":"Mew Temple／Origin Temple","pokemonOriginal":"Mew","biomeOriginal":"Jungle","extraOriginal":"Place the Origin Fossil on the Ancient Altar after obtaining the required materials.","pokemonZh":"Mew"},{"structure":"Bell Tower","pokemonOriginal":"Ho-Oh","biomeOriginal":"Oak Forests","extraOriginal":"Defeat the Old Sage in Burned Tower to obtain Rainbow Wing; use Rainbow Wing at Bell Tower to summon Ho-Oh.","pokemonZh":"Ho-Oh"},{"structure":"Burned Tower","pokemonOriginal":"Raikou、Entei、Suicune","biomeOriginal":"Birch Forest","extraOriginal":"Raikou, Entei and Suicune can appear in or around the tower. The Old Sage drops Rainbow Wing.","pokemonZh":"Raikou、Entei、Suicune"},{"structure":"Whirl Island","pokemonOriginal":"Lugia","biomeOriginal":"Deep Cold Ocean","extraOriginal":"Use Silver Wing at Whirl Island to summon Lugia; Silver Wing comes from Giovanni in Rocket Radio Tower.","pokemonZh":"Lugia"},{"structure":"Rocket Radio Tower","pokemonOriginal":"Shadow Lugia、Armored Mewtwo","biomeOriginal":"Savanna","extraOriginal":"Giovanni drops Silver Wing. Synthetic Matrix and the materials for Shadow Soul Stone are obtained here.","pokemonZh":"Shadow Lugia、Armored Mewtwo（前置）"},{"structure":"Ilex Shrine","pokemonOriginal":"Celebi","biomeOriginal":"Taiga","extraOriginal":"Defeat Rival Red for the GS Ball, then use the button near the shrine while holding it.","pokemonZh":"Celebi"},{"structure":"Regirock Temple","pokemonOriginal":"Regirock","biomeOriginal":"Lush Desert","extraOriginal":"Need Pebble Relic.","pokemonZh":"Regirock"},{"structure":"Regice Temple","pokemonOriginal":"Regice","biomeOriginal":"Snowy Badlands","extraOriginal":"Need Cryo Relic.","pokemonZh":"Regice"},{"structure":"Registeel Temple","pokemonOriginal":"Registeel","biomeOriginal":"Alpine Highlands","extraOriginal":"Need Metal Relic.","pokemonZh":"Registeel"},{"structure":"Kyogre Dome／Temple","pokemonOriginal":"Kyogre","biomeOriginal":"Deep Cold Ocean","extraOriginal":"Need Ocean Core to summon Kyogre. Blue Orb can be found in the structure.","pokemonZh":"Kyogre"},{"structure":"Groudon Volcano","pokemonOriginal":"Groudon","biomeOriginal":"Deep Warm Ocean","extraOriginal":"Collect 8 Magma Geostones, then craft Earth Core. Red Orb can be found in the structure.","pokemonZh":"Groudon"},{"structure":"Sky Pillar","pokemonOriginal":"Rayquaza","biomeOriginal":"Deep Ocean","extraOriginal":"Defeat Team Aqua leader Ivan, Team Magma leader Max and Lyris; find Emerald Emblem and craft Sky Core.","pokemonZh":"Rayquaza"},{"structure":"Secret Garden","pokemonOriginal":"Latias、Latios","biomeOriginal":"Deep Lukewarm Ocean","extraOriginal":"Ruby Dew summons Latias; Sapphire Dew summons Latios. The dews come from Hoenn Champion Rocco.","pokemonZh":"Latias、Latios"},{"structure":"Wish Cave","pokemonOriginal":"Jirachi","biomeOriginal":"Blooming Plateau","extraOriginal":"Find the Melodic Tape in a barrel at the top of the structure.","pokemonZh":"Jirachi"},{"structure":"Deoxys Meteorite","pokemonOriginal":"Deoxys","biomeOriginal":"Small End Islands (The End)","extraOriginal":"Dig through Mega Meteorite blocks to find Deoxys summon item and hidden altar. Form-changing meteorites are scattered across the End.","pokemonZh":"Deoxys"},{"structure":"Spear Pillar","pokemonOriginal":"Dialga、Palkia","biomeOriginal":"Cold Shrubland","extraOriginal":"Need Adamant Orb for Dialga, Lustrous Orb for Palkia and a single-use Red Chain for both.","pokemonZh":"Dialga、Palkia"},{"structure":"Temple of Sinnoh","pokemonOriginal":"Arceus","biomeOriginal":"Origin Dimension","extraOriginal":"Need Azure Flute and all 18 Arceus Plates; Dialga and Palkia must be captured first, with an ingot obtained from the Distortion World.","pokemonZh":"Arceus"},{"structure":"Snowpoint Temple","pokemonOriginal":"Regigigas","biomeOriginal":"Wintry Lowlands","extraOriginal":"Need Titan Relic. All five Titans must be in the party for the summoning to succeed.","pokemonZh":"Regigigas"},{"structure":"Lake Acuity","pokemonOriginal":"Uxie","biomeOriginal":"Glacial Chasm","extraOriginal":"Legendary Monuments structure; the spawn table lists Lake Acuity for Uxie.","pokemonZh":"Uxie"},{"structure":"Lake Verity","pokemonOriginal":"Mesprit","biomeOriginal":"Cherry Grove","extraOriginal":"Legendary Monuments structure; the spawn table lists Lake Verity for Mesprit.","pokemonZh":"Mesprit"},{"structure":"Lake Valor","pokemonOriginal":"Azelf","biomeOriginal":"Arid Highlands","extraOriginal":"Legendary Monuments structure; the spawn table lists Lake Valor for Azelf.","pokemonZh":"Azelf"},{"structure":"Crescent Isle","pokemonOriginal":"Cresselia","biomeOriginal":"Deep Ocean","extraOriginal":"Obtain Lunar Wing; it is used at Fullmoon Island for Cresselia.","pokemonZh":"Cresselia（前置）"},{"structure":"Fullmoon Island","pokemonOriginal":"Cresselia","biomeOriginal":"Lukewarm Ocean","extraOriginal":"Need Dream Catcher and Lunar Wing.","pokemonZh":"Cresselia"},{"structure":"Newmoon Island","pokemonOriginal":"Darkrai","biomeOriginal":"Nightmare Dimension","extraOriginal":"Hold Moonlight Amulet while sleeping during the Night cycle to enter Nightmare Dimension; use Nightmare Weaver.","pokemonZh":"Darkrai"},{"structure":"Flower Paradise","pokemonOriginal":"Shaymin","biomeOriginal":"Warm Ocean","extraOriginal":"Need Professor Oak\u0027s Letter; hold all five Gen 1 starter Pokémon in the party.","pokemonZh":"Shaymin"},{"structure":"Temple of the Sea","pokemonOriginal":"Manaphy、Phione","biomeOriginal":"Deep Cold Ocean","extraOriginal":"Obtain Manaphy Egg. Breed Manaphy with Ditto in a Pasture Block to obtain Phione Egg.","pokemonZh":"Manaphy、Phione"},{"structure":"Stark Mountain","pokemonOriginal":"Heatran","biomeOriginal":"Nether Wastes","extraOriginal":"Combine Heat Fragment and Heat Splinter into Magmatic Cluster, then process it in Stark Forge to make Magma Stone.","pokemonZh":"Heatran"},{"structure":"Turnback Cave → Giratina Island","pokemonOriginal":"Giratina","biomeOriginal":"Distortion World","extraOriginal":"Enter the Distortion World through Turnback Cave, then use Red Chain at Giratina Island altar.","pokemonZh":"Giratina"},{"structure":"Grasswither Shrine","pokemonOriginal":"Wo-Chien","biomeOriginal":"Warped Forest","extraOriginal":"Legendary Monuments shrine; collect 8 stakes of the same type before using it.","pokemonZh":"Wo-Chien"},{"structure":"Icerend Shrine","pokemonOriginal":"Chien-Pao","biomeOriginal":"Basalt Deltas","extraOriginal":"Legendary Monuments shrine; collect 8 stakes of the same type before using it.","pokemonZh":"Chien-Pao"},{"structure":"Groundblight Shrine","pokemonOriginal":"Ting-Lu","biomeOriginal":"Soul Sand Valley","extraOriginal":"Legendary Monuments shrine; collect 8 stakes of the same type before using it.","pokemonZh":"Ting-Lu"},{"structure":"Firescourge Shrine","pokemonOriginal":"Chi-Yu","biomeOriginal":"Nether Wastes","extraOriginal":"Legendary Monuments shrine; collect 8 stakes of the same type before using it.","pokemonZh":"Chi-Yu"},{"structure":"Eternatus Cocoon","pokemonOriginal":"Eternatus","biomeOriginal":"End Highlands","extraOriginal":"Star Core enables Eternamax; it is not the normal summon condition.","pokemonZh":"Eternatus"},{"structure":"Dyna Tree","pokemonOriginal":"Galarian Articuno、Galarian Zapdos、Galarian Moltres","biomeOriginal":"Open field (fixed biome not specified)","extraOriginal":"Galarian Articuno appears at night; Galarian Zapdos during a thunderstorm; Galarian Moltres during the day.","pokemonZh":"Galarian Articuno、Galarian Zapdos、Galarian Moltres"},{"structure":"Calyrex Shrines／Crown Cemetery／Crown Spire","pokemonOriginal":"Calyrex、Glastrier、Spectrier","biomeOriginal":"Snowy Plains; Old Growth Pine Taiga","extraOriginal":"Need Calyrex Crown; Iceroot carrot for Glastrier; Shaderoot carrot for Spectrier.","pokemonZh":"Calyrex、Glastrier、Spectrier"},{"structure":"Split Decision Temple","pokemonOriginal":"Regieleki、Regidrago","biomeOriginal":"Hot Shrubland","extraOriginal":"Spark Relic summons Regieleki; Draco Relic summons Regidrago.","pokemonZh":"Regieleki、Regidrago"},{"structure":"Necrozma Towers","pokemonOriginal":"Necrozma","biomeOriginal":"The End (structure page does not specify a fixed biome)","extraOriginal":"The structure page gives lore but no explicit summon item; the spawn table lists The End for Necrozma.","pokemonZh":"Necrozma（及 Poipole 的 Dawn／Dusk Tower 條件）"}],"spawn":[{"name":"Articuno","rarity":"Ultra-Rare","spawnOriginal":"Snowy Plains","weatherOriginal":"—","otherOriginal":"Structure:; Articuno Tower; ; Forms: Galarian form; spawns under; Dyna Tree during the night","generation":"Gen. 1 Kanto","category":"legendary","nameZh":"急凍鳥","wildAvailable":true,"structureHint":true},{"name":"Zapdos","rarity":"Ultra-Rare","spawnOriginal":"Stony Shore","weatherOriginal":"—","otherOriginal":"Structure: Zapdos Tower; ; Forms: Galarian form; spawns under; Dyna Tree during a thunderstorm","generation":"Gen. 1 Kanto","category":"legendary","nameZh":"閃電鳥","wildAvailable":true,"structureHint":true},{"name":"Moltres","rarity":"Ultra-Rare","spawnOriginal":"Nether Wastes","weatherOriginal":"—","otherOriginal":"Structure: Moltres Tower; ; Forms: Galarian form spawns under; Dyna Tree during the day","generation":"Gen. 1 Kanto","category":"legendary","nameZh":"火焰鳥","wildAvailable":true,"structureHint":true},{"name":"Mewtwo","rarity":"Ultra-Rare","spawnOriginal":"Savanna","weatherOriginal":"—","otherOriginal":"Structure: Team Rocket Tower;","generation":"Gen. 1 Kanto","category":"legendary","nameZh":"超夢","wildAvailable":true,"structureHint":true},{"name":"Mew","rarity":"Ultra-Rare","spawnOriginal":"Jungle","weatherOriginal":"—","otherOriginal":"Structure: Origin Temple;","generation":"Gen. 1 Kanto","category":"legendary","nameZh":"夢幻","wildAvailable":true,"structureHint":true},{"name":"Raikou","rarity":"Rare","spawnOriginal":"Birch Forest","weatherOriginal":"Thunderstorm","otherOriginal":"Structure: Burned Tower; ; Forms: More common during thunderstorm","generation":"Gen. 2 Johto","category":"legendary","nameZh":"雷公","wildAvailable":true,"structureHint":true},{"name":"Entei","rarity":"Rare","spawnOriginal":"Birch Forest","weatherOriginal":"Daytime","otherOriginal":"Structure: Burned Tower; ; Forms: More common in the daytime","generation":"Gen. 2 Johto","category":"legendary","nameZh":"炎帝","wildAvailable":true,"structureHint":true},{"name":"Suicune","rarity":"Rare","spawnOriginal":"Birch Forest","weatherOriginal":"Rain","otherOriginal":"Structure: Burned Tower; ; Forms: More common during rain","generation":"Gen. 2 Johto","category":"legendary","nameZh":"水君","wildAvailable":true,"structureHint":true},{"name":"Lugia","rarity":"Ultra-Rare","spawnOriginal":"Deep Cold Ocean","weatherOriginal":"—","otherOriginal":"Structure: Whirl Island; ; Forms: Shadow Lugia can be obtained by crafting the Shadow Soul Stone","generation":"Gen. 2 Johto","category":"legendary","nameZh":"洛奇亞","wildAvailable":true,"structureHint":true},{"name":"Ho-Oh","rarity":"Ultra-Rare","spawnOriginal":"Oak Forest","weatherOriginal":"—","otherOriginal":"Structure:; Bell Tower;","generation":"Gen. 2 Johto","category":"legendary","nameZh":"鳳王","wildAvailable":true,"structureHint":true},{"name":"Celebi","rarity":"Ultra-Rare","spawnOriginal":"Taiga","weatherOriginal":"—","otherOriginal":"Structure: Ilex Shrine;","generation":"Gen. 2 Johto","category":"legendary","nameZh":"時拉比","wildAvailable":true,"structureHint":true},{"name":"Regirock","rarity":"Ultra-Rare","spawnOriginal":"Lush Desert","weatherOriginal":"—","otherOriginal":"Structure: Regirock temple; ; Forms: Need Pebble Relic","generation":"Gen. 3 Hoenn","category":"legendary","nameZh":"雷吉洛克","wildAvailable":true,"structureHint":true},{"name":"Regice","rarity":"Ultra-Rare","spawnOriginal":"Snowy Badlands","weatherOriginal":"—","otherOriginal":"Structure: Regice temple; ; Forms: Need Cryo Relic","generation":"Gen. 3 Hoenn","category":"legendary","nameZh":"雷吉艾斯","wildAvailable":true,"structureHint":true},{"name":"Registeel","rarity":"Ultra-Rare","spawnOriginal":"Alpine Highlands","weatherOriginal":"—","otherOriginal":"Structure: Registeel temple; ; Forms: Need Metal Relic","generation":"Gen. 3 Hoenn","category":"legendary","nameZh":"雷吉斯奇魯","wildAvailable":true,"structureHint":true},{"name":"Latias","rarity":"Ultra-Rare","spawnOriginal":"Deep Lukewarm Ocean","weatherOriginal":"—","otherOriginal":"Structure:; Secret Garden; ; Forms: Need Ruby Dew","generation":"Gen. 3 Hoenn","category":"legendary","nameZh":"拉帝亞斯","wildAvailable":true,"structureHint":true},{"name":"Latios","rarity":"Ultra-Rare","spawnOriginal":"Plains","weatherOriginal":"—","otherOriginal":"Structure:; Secret Garden; ; Forms: Need Sapphire Dew","generation":"Gen. 3 Hoenn","category":"legendary","nameZh":"拉帝歐斯","wildAvailable":true,"structureHint":true},{"name":"Kyogre","rarity":"Ultra-Rare","spawnOriginal":"Deep Cold Ocean","weatherOriginal":"—","otherOriginal":"Structure: Submerged in its Temple; ; Forms: Need Ocean Core","generation":"Gen. 3 Hoenn","category":"legendary","nameZh":"蓋歐卡","wildAvailable":true,"structureHint":true},{"name":"Groudon","rarity":"Ultra-Rare","spawnOriginal":"Deep Warm Ocean","weatherOriginal":"—","otherOriginal":"Structure: Volcano; ; Forms: Need Earth Core","generation":"Gen. 3 Hoenn","category":"legendary","nameZh":"固拉多","wildAvailable":true,"structureHint":true},{"name":"Rayquaza","rarity":"Ultra-Rare","spawnOriginal":"Deep Ocean","weatherOriginal":"—","otherOriginal":"Structure: Sky Pillar; ; Forms: Need Sky Core","generation":"Gen. 3 Hoenn","category":"legendary","nameZh":"烈空坐","wildAvailable":true,"structureHint":true},{"name":"Jirachi","rarity":"Ultra-Rare","spawnOriginal":"Blooming Plateau","weatherOriginal":"—","otherOriginal":"Structure: Wish Cave; ; Forms: Need Melodic Tape (Vol. 1)","generation":"Gen. 3 Hoenn","category":"legendary","nameZh":"基拉祈","wildAvailable":true,"structureHint":true},{"name":"Deoxys","rarity":"Ultra-Rare","spawnOriginal":"The End","weatherOriginal":"—","otherOriginal":"Structure: Deoxys Meteorite; ; Forms: Need Meteorite Crystal","generation":"Gen. 3 Hoenn","category":"legendary","nameZh":"代歐奇希斯","wildAvailable":true,"structureHint":true},{"name":"Uxie","rarity":"Ultra-Rare","spawnOriginal":"Glacial Chasm","weatherOriginal":"—","otherOriginal":"Structure: Lake Acuity;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"由克希","wildAvailable":true,"structureHint":true},{"name":"Mesprit","rarity":"Ultra-Rare","spawnOriginal":"Cherry Grove","weatherOriginal":"—","otherOriginal":"Structure: Lake Verity;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"艾姆利多","wildAvailable":true,"structureHint":true},{"name":"Azelf","rarity":"Ultra-Rare","spawnOriginal":"Arid Highlands","weatherOriginal":"—","otherOriginal":"Structure: Lake Valor;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"亞克諾姆","wildAvailable":true,"structureHint":true},{"name":"Dialga","rarity":"Ultra-Rare","spawnOriginal":"Cold Shrubland","weatherOriginal":"—","otherOriginal":"Structure: Spear Pillar;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"帝牙盧卡","wildAvailable":true,"structureHint":true},{"name":"Palkia","rarity":"Ultra-Rare","spawnOriginal":"Cold Shrubland","weatherOriginal":"—","otherOriginal":"Structure: Spear Pillar;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"帕路奇亞","wildAvailable":true,"structureHint":true},{"name":"Heatran","rarity":"Ultra-Rare","spawnOriginal":"Nether Wastes","weatherOriginal":"—","otherOriginal":"Structure: Stark Mountain;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"席多藍恩","wildAvailable":true,"structureHint":true},{"name":"Regigigas","rarity":"Ultra-Rare","spawnOriginal":"Wintry Lowlands","weatherOriginal":"—","otherOriginal":"Structure: Snowpoint; Temple;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"雷吉奇卡斯","wildAvailable":true,"structureHint":true},{"name":"Giratina","rarity":"Ultra-Rare","spawnOriginal":"Distorted Dimension","weatherOriginal":"—","otherOriginal":"Giratina Island;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"騎拉帝納","wildAvailable":true,"structureHint":true},{"name":"Cresselia","rarity":"Ultra-Rare","spawnOriginal":"Lukewarm Ocean","weatherOriginal":"—","otherOriginal":"Structure: FullMoon Island;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"克雷色利亞","wildAvailable":true,"structureHint":true},{"name":"Phione","rarity":"Ultra-Rare","spawnOriginal":"—","weatherOriginal":"—","otherOriginal":"","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"霏歐納","wildAvailable":false,"structureHint":false},{"name":"Manaphy","rarity":"Ultra-Rare","spawnOriginal":"Deep Cold Ocean","weatherOriginal":"—","otherOriginal":"","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"瑪納霏","wildAvailable":true,"structureHint":false},{"name":"Darkrai","rarity":"Ultra-Rare","spawnOriginal":"Nightmare Dimension","weatherOriginal":"Night","otherOriginal":"Structure: Newmoon Island;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"達克萊伊","wildAvailable":true,"structureHint":true},{"name":"Shaymin","rarity":"Ultra-Rare","spawnOriginal":"Warm Ocean","weatherOriginal":"—","otherOriginal":"Structure: Flower Paradise;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"謝米","wildAvailable":true,"structureHint":true},{"name":"Arceus","rarity":"Ultra-Rare","spawnOriginal":"Origin Dimension","weatherOriginal":"—","otherOriginal":"Sinnoh Temple;","generation":"Gen. 4 Sinnoh","category":"legendary","nameZh":"阿爾宙斯","wildAvailable":true,"structureHint":true},{"name":"Victini","rarity":"Ultra-Rare","spawnOriginal":"Crimson Forest","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 5 Unova","category":"legendary","nameZh":"比克提尼","wildAvailable":true,"structureHint":false},{"name":"Cobalion","rarity":"Ultra-Rare","spawnOriginal":"Windswept Forest","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 5 Unova","category":"legendary","nameZh":"勾帕路翁","wildAvailable":true,"structureHint":false},{"name":"Terrakion","rarity":"Ultra-Rare","spawnOriginal":"Savanna, Savanna Plateau","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 5 Unova","category":"legendary","nameZh":"代拉基翁","wildAvailable":true,"structureHint":false},{"name":"Virizion","rarity":"Ultra-Rare","spawnOriginal":"All Forest biomes","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 5 Unova","category":"legendary","nameZh":"畢力吉翁","wildAvailable":true,"structureHint":false},{"name":"Tornadus","rarity":"Ultra-Rare","spawnOriginal":"All Ocean biomes","weatherOriginal":"Rain","otherOriginal":"Rain","generation":"Gen. 5 Unova","category":"legendary","nameZh":"龍捲雲","wildAvailable":true,"structureHint":false},{"name":"Thundurus","rarity":"Ultra-Rare","spawnOriginal":"Windswept Hills, Windswept Savanna","weatherOriginal":"Thunderstorm","otherOriginal":"Thunderstorm","generation":"Gen. 5 Unova","category":"legendary","nameZh":"雷電雲","wildAvailable":true,"structureHint":false},{"name":"Reshiram","rarity":"Ultra-Rare","spawnOriginal":"Meadow, Stony Peaks, Stony Slopes, Jagged Peaks, Grove, Frozen Peaks,","weatherOriginal":"Weather clear","otherOriginal":"Weather Clear","generation":"Gen. 5 Unova","category":"legendary","nameZh":"萊希拉姆","wildAvailable":true,"structureHint":false},{"name":"Zekrom","rarity":"Ultra-Rare","spawnOriginal":"Meadow, Stony Peaks, Stony Slopes, Jagged Peaks, Grove, Frozen Peaks","weatherOriginal":"Thunderstorm","otherOriginal":"Thunderstorm","generation":"Gen. 5 Unova","category":"legendary","nameZh":"捷克羅姆","wildAvailable":true,"structureHint":false},{"name":"Landorus","rarity":"Ultra-Rare","spawnOriginal":"Badlands","weatherOriginal":"Weather clear","otherOriginal":"Weather clear","generation":"Gen. 5 Unova","category":"legendary","nameZh":"土地雲","wildAvailable":true,"structureHint":false},{"name":"Kyurem","rarity":"Ultra-Rare","spawnOriginal":"Ice Spikes","weatherOriginal":"Rain","otherOriginal":"Rain","generation":"Gen. 5 Unova","category":"legendary","nameZh":"酋雷姆","wildAvailable":true,"structureHint":false},{"name":"Keldeo","rarity":"Ultra-Rare","spawnOriginal":"Sakura Grove, Sakura Valley","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 5 Unova","category":"legendary","nameZh":"凱路迪歐","wildAvailable":true,"structureHint":false},{"name":"Meloetta","rarity":"Rare","spawnOriginal":"Sunflower Plains","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 5 Unova","category":"legendary","nameZh":"美洛耶塔","wildAvailable":true,"structureHint":false},{"name":"Genesect","rarity":"Ultra-Rare","spawnOriginal":"Fossil: Nether Star + Dubious Disk +Doom Fossil;","weatherOriginal":"—","otherOriginal":"Use Resurrection Machine","generation":"Gen. 5 Unova","category":"legendary","nameZh":"蓋諾賽克特","wildAvailable":false,"structureHint":true},{"name":"Xerneas","rarity":"Ultra-Rare","spawnOriginal":"Flower Forest","weatherOriginal":"Day","otherOriginal":"Day","generation":"Gen. 6 Kalos","category":"legendary","nameZh":"哲爾尼亞斯","wildAvailable":true,"structureHint":false},{"name":"Yveltal","rarity":"Ultra-Rare","spawnOriginal":"Dark Forest","weatherOriginal":"Night","otherOriginal":"Night","generation":"Gen. 6 Kalos","category":"legendary","nameZh":"伊裴爾塔爾","wildAvailable":true,"structureHint":false},{"name":"Zygarde","rarity":"Ultra-Rare","spawnOriginal":"Dripstone Caves","weatherOriginal":"—","otherOriginal":"Zygarde Core/cells; Forms: Core Percent Cell=10; Dripstone Caves; ; Core Percent Cells =Lush Caves","generation":"Gen. 6 Kalos","category":"legendary","nameZh":"基格爾德","wildAvailable":true,"structureHint":true},{"name":"Diancie","rarity":"Ultra-Rare","spawnOriginal":"Lush Caves","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 6 Kalos","category":"legendary","nameZh":"蒂安希","wildAvailable":true,"structureHint":true},{"name":"Hoopa","rarity":"Ultra-Rare","spawnOriginal":"The End","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 6 Kalos","category":"legendary","nameZh":"胡帕","wildAvailable":true,"structureHint":false},{"name":"Volcanion","rarity":"Ultra-Rare","spawnOriginal":"Meadow, Grove, Snowy Slopes,; Jagged Peaks, Frozen Peaks, Stony Peaks","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 6 Kalos","category":"legendary","nameZh":"波爾凱尼恩","wildAvailable":true,"structureHint":false},{"name":"Type: Null","rarity":"Ultra-Rare","spawnOriginal":"Fossil: Loot dropped by the Team Rocket; Scientist","weatherOriginal":"—","otherOriginal":"Resurrection Machine","generation":"Gen. 7 Alola","category":"legendary","nameZh":"屬性：空","wildAvailable":false,"structureHint":true},{"name":"Silvally","rarity":"—","spawnOriginal":"Type Null’s evolution","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"銀伴戰獸","wildAvailable":false,"structureHint":false},{"name":"Tapu Koko","rarity":"Ultra-Rare","spawnOriginal":"Savanna, Savanna Plateau, Jungle","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"卡璞・鳴鳴","wildAvailable":true,"structureHint":false},{"name":"Tapu Lele","rarity":"Ultra-Rare","spawnOriginal":"Cherry Grove, Flower Forest,; Sunflower Plains, Beach","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"卡璞・蝶蝶","wildAvailable":true,"structureHint":false},{"name":"Tapu Bulu","rarity":"Ultra-Rare","spawnOriginal":"All River biomes, Jungle","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"卡璞・哞哞","wildAvailable":true,"structureHint":false},{"name":"Tapu Fini","rarity":"Ultra-Rare","spawnOriginal":"All River biomes, Beach","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"卡璞・鰭鰭","wildAvailable":true,"structureHint":false},{"name":"Cosmog","rarity":"Ultra-Rare","spawnOriginal":"The End","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"科斯莫古","wildAvailable":true,"structureHint":false},{"name":"Cosmoem","rarity":"Ultra-Rare","spawnOriginal":"The End","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"科斯莫姆","wildAvailable":true,"structureHint":false},{"name":"Solgaleo","rarity":"Ultra-Rare","spawnOriginal":"Savanna, Savanna Plateau, The End","weatherOriginal":"Day","otherOriginal":"Day","generation":"Gen. 7 Alola","category":"legendary","nameZh":"索爾迦雷歐","wildAvailable":true,"structureHint":false},{"name":"Lunala","rarity":"Ultra-Rare","spawnOriginal":"Dark Forest, The End","weatherOriginal":"Night","otherOriginal":"Night","generation":"Gen. 7 Alola","category":"legendary","nameZh":"露奈雅拉","wildAvailable":true,"structureHint":false},{"name":"Necrozma","rarity":"Ultra-Rare","spawnOriginal":"The End","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"奈克洛茲瑪","wildAvailable":true,"structureHint":false},{"name":"Magearna","rarity":"Ultra-Rare","spawnOriginal":"All Taiga biomes","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"瑪機雅娜","wildAvailable":true,"structureHint":false},{"name":"Marshadow","rarity":"Ultra-Rare","spawnOriginal":"Deep Dark","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"瑪夏多","wildAvailable":true,"structureHint":false},{"name":"Zeraora","rarity":"Ultra-Rare","spawnOriginal":"Badlands, All Forest biomes","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"捷拉奧拉","wildAvailable":true,"structureHint":false},{"name":"Meltan","rarity":"Rare","spawnOriginal":"All Overworld biomes or Beach (Ultra-Rare)","weatherOriginal":"—","otherOriginal":"Near Iron Block","generation":"Gen. 7 Alola","category":"legendary","nameZh":"美錄坦","wildAvailable":true,"structureHint":false},{"name":"Melmetal","rarity":"—","spawnOriginal":"Evolves from Meltan when it is at level 70 and holding an anvil","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 7 Alola","category":"legendary","nameZh":"美錄梅塔","wildAvailable":false,"structureHint":false},{"name":"Zacian","rarity":"Ultra-Rare","spawnOriginal":"Dark Forest","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"蒼響","wildAvailable":true,"structureHint":false},{"name":"Zamazenta","rarity":"Ultra-Rare","spawnOriginal":"Dark Forest","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"藏瑪然特","wildAvailable":true,"structureHint":false},{"name":"Eternatus","rarity":"Ultra-Rare","spawnOriginal":"End Highlands","weatherOriginal":"—","otherOriginal":"Forms: Eternatus needs a Star Core to become Eternamax","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"無極汰那","wildAvailable":true,"structureHint":false},{"name":"Kubfu","rarity":"Ultra-Rare","spawnOriginal":"Cherry Grove","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"熊徒弟","wildAvailable":true,"structureHint":false},{"name":"Urshifu","rarity":"Ultra-Rare","spawnOriginal":"Cherry Grove","weatherOriginal":"—","otherOriginal":"Forms: Needed: Scroll of Darkness or Scroll of Water","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"武道熊師","wildAvailable":true,"structureHint":false},{"name":"Zarude","rarity":"Ultra-Rare","spawnOriginal":"Jungle","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"薩戮德","wildAvailable":true,"structureHint":false},{"name":"Regieleki","rarity":"Ultra-Rare","spawnOriginal":"Desert","weatherOriginal":"—","otherOriginal":"Structure:; Split Decision Temple; ; Forms: Need Spark Relic","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"雷吉艾勒奇","wildAvailable":true,"structureHint":true},{"name":"Regidrago","rarity":"Ultra-Rare","spawnOriginal":"Desert","weatherOriginal":"—","otherOriginal":"Structure: Split Decision Temple; ; Forms: Need Draco Relic","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"雷吉鐸克","wildAvailable":true,"structureHint":true},{"name":"Glastrier","rarity":"Ultra-Rare","spawnOriginal":"Snowy Taiga","weatherOriginal":"—","otherOriginal":"Structure: Crown Cemetery Spire; ; Forms: Need Iceroot carrots","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"雪暴馬","wildAvailable":true,"structureHint":true},{"name":"Spectrier","rarity":"Ultra-Rare","spawnOriginal":"Old Growth Pine Taiga","weatherOriginal":"—","otherOriginal":"Structure:; Crown Cemetery; ; Forms: Need Shaderoot carrot","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"靈幽馬","wildAvailable":true,"structureHint":true},{"name":"Calyrex","rarity":"Ultra-Rare","spawnOriginal":"Old Growth Pine Taiga, Snowy Taiga","weatherOriginal":"—","otherOriginal":"Structure: Crown Cemetery or Crown Spire; ; Forms: Need Calyrex Crown","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"蕾冠王","wildAvailable":true,"structureHint":true},{"name":"Enamorus","rarity":"Ultra-Rare","spawnOriginal":"Meadow, Grove, Snowy Slopes,; Jagged Peaks, Frozen Peaks, Stony Peaks","weatherOriginal":"Thunderstorm","otherOriginal":"During a Thunderstorm","generation":"Gen. 8 Galar／Hisui","category":"legendary","nameZh":"眷戀雲","wildAvailable":true,"structureHint":false},{"name":"Wo-Chien","rarity":"Ultra-Rare","spawnOriginal":"Warped Forest","weatherOriginal":"—","otherOriginal":"Grasswither Shrine; ; Forms: To use the shrines you will have to first collect 8 stakes of the same type","generation":"Gen. 9 Paldea","category":"legendary","nameZh":"古簡蝸","wildAvailable":true,"structureHint":true},{"name":"Chien-Pao","rarity":"Ultra-Rare","spawnOriginal":"Basalt Deltas","weatherOriginal":"—","otherOriginal":"Icerend Shrine; ; Forms: To use the shrines you will have to first collect 8 stakes of the same type","generation":"Gen. 9 Paldea","category":"legendary","nameZh":"古劍豹","wildAvailable":true,"structureHint":true},{"name":"Ting-Lu","rarity":"Ultra-Rare","spawnOriginal":"Soul Sand Valley","weatherOriginal":"—","otherOriginal":"Groundblight Shrine; ; Forms: To use the shrines you will have to first collect 8 stakes of the same type","generation":"Gen. 9 Paldea","category":"legendary","nameZh":"古鼎鹿","wildAvailable":true,"structureHint":true},{"name":"Chi-Yu","rarity":"Ultra-Rare","spawnOriginal":"Nether Wastes","weatherOriginal":"—","otherOriginal":"Firescourge Shrine; ; Forms: To use the shrines you will have to first collect 8 stakes of the same type","generation":"Gen. 9 Paldea","category":"legendary","nameZh":"古玉魚","wildAvailable":true,"structureHint":true},{"name":"Koraidon","rarity":"Ultra-Rare","spawnOriginal":"Beach","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 9 Paldea","category":"legendary","nameZh":"故勒頓","wildAvailable":true,"structureHint":false},{"name":"Miraidon","rarity":"Ultra-Rare","spawnOriginal":"Beach","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 9 Paldea","category":"legendary","nameZh":"密勒頓","wildAvailable":true,"structureHint":false},{"name":"Walking Wake","rarity":"Ultra-Rare","spawnOriginal":"Meadow, Grove, Snowy Slopes,; Jagged Peaks, Frozen Peaks, Stony Peaks","weatherOriginal":"Rain","otherOriginal":"Rain","generation":"Gen. 9 Paldea","category":"legendary","nameZh":"波盪水","wildAvailable":true,"structureHint":false},{"name":"Iron Leaves","rarity":"Ultra-Rare","spawnOriginal":"All Forest biomes","weatherOriginal":"Night","otherOriginal":"Night","generation":"Gen. 9 Paldea","category":"legendary","nameZh":"鐵斑葉","wildAvailable":true,"structureHint":false},{"name":"Ogerpon","rarity":"Ultra-Rare","spawnOriginal":"Lush Caves","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 9 Paldea","category":"legendary","nameZh":"厄詭椪","wildAvailable":true,"structureHint":true},{"name":"Terapagos","rarity":"Ultra-Rare","spawnOriginal":"Caves (MaxY=0)","weatherOriginal":"—","otherOriginal":"Amethyst Geode","generation":"Gen. 9 Paldea","category":"legendary","nameZh":"太樂巴戈斯","wildAvailable":true,"structureHint":true},{"name":"Pecharunt","rarity":"Ultra-Rare","spawnOriginal":"Dark Forest","weatherOriginal":"—","otherOriginal":"—","generation":"Gen. 9 Paldea","category":"legendary","nameZh":"桃歹郎","wildAvailable":true,"structureHint":false},{"name":"Nihilego","rarity":"Ultra-Rare","spawnOriginal":"All Ocean biomes","weatherOriginal":"—","otherOriginal":"—","generation":"究極異獸","category":"ultra-beast","nameZh":"虛吾伊德","wildAvailable":true,"structureHint":false},{"name":"Buzzwole","rarity":"Ultra-Rare","spawnOriginal":"All Jungle biomes","weatherOriginal":"—","otherOriginal":"—","generation":"究極異獸","category":"ultra-beast","nameZh":"爆肌蚊","wildAvailable":true,"structureHint":false},{"name":"Pheromosa","rarity":"Ultra-Rare","spawnOriginal":"Blooming Valley, Steppe, White Cliffs, The End","weatherOriginal":"—","otherOriginal":"—","generation":"究極異獸","category":"ultra-beast","nameZh":"費洛美螂","wildAvailable":true,"structureHint":false},{"name":"Xurkitree","rarity":"Ultra-Rare","spawnOriginal":"The End","weatherOriginal":"—","otherOriginal":"—","generation":"究極異獸","category":"ultra-beast","nameZh":"電束木","wildAvailable":true,"structureHint":false},{"name":"Celesteela","rarity":"Ultra-Rare","spawnOriginal":"The End","weatherOriginal":"—","otherOriginal":"—","generation":"究極異獸","category":"ultra-beast","nameZh":"鐵火輝夜","wildAvailable":true,"structureHint":false},{"name":"Kartana","rarity":"Ultra-Rare","spawnOriginal":"Cherry Grove","weatherOriginal":"—","otherOriginal":"—","generation":"究極異獸","category":"ultra-beast","nameZh":"紙御劍","wildAvailable":true,"structureHint":false},{"name":"Guzzlord","rarity":"Ultra-Rare","spawnOriginal":"The End","weatherOriginal":"—","otherOriginal":"—","generation":"究極異獸","category":"ultra-beast","nameZh":"惡食大王","wildAvailable":true,"structureHint":false},{"name":"Poipole","rarity":"Ultra-Rare","spawnOriginal":"The End","weatherOriginal":"—","otherOriginal":"Dawn Tower, Dusk Tower","generation":"究極異獸","category":"ultra-beast","nameZh":"毒貝比","wildAvailable":true,"structureHint":true},{"name":"Naganadel","rarity":"Ultra-Rare","spawnOriginal":"The End","weatherOriginal":"—","otherOriginal":"Near a Purpur block","generation":"究極異獸","category":"ultra-beast","nameZh":"四顎針龍","wildAvailable":true,"structureHint":false},{"name":"Stakataka","rarity":"Ultra-Rare","spawnOriginal":"Deep Dark","weatherOriginal":"—","otherOriginal":"—","generation":"究極異獸","category":"ultra-beast","nameZh":"壘磊石","wildAvailable":true,"structureHint":false},{"name":"Blacephalon","rarity":"Ultra-Rare","spawnOriginal":"Dark Forest","weatherOriginal":"—","otherOriginal":"—","generation":"究極異獸","category":"ultra-beast","nameZh":"砰頭小丑","wildAvailable":true,"structureHint":false}]};
+    const NAME_MAP = {"Articuno":"急凍鳥","Zapdos":"閃電鳥","Moltres":"火焰鳥","Mewtwo":"超夢","Mew":"夢幻","Raikou":"雷公","Entei":"炎帝","Suicune":"水君","Lugia":"洛奇亞","Ho-Oh":"鳳王","Celebi":"時拉比","Regirock":"雷吉洛克","Regice":"雷吉艾斯","Registeel":"雷吉斯奇魯","Latias":"拉帝亞斯","Latios":"拉帝歐斯","Kyogre":"蓋歐卡","Groudon":"固拉多","Rayquaza":"烈空坐","Jirachi":"基拉祈","Deoxys":"代歐奇希斯","Uxie":"由克希","Mesprit":"艾姆利多","Azelf":"亞克諾姆","Dialga":"帝牙盧卡","Palkia":"帕路奇亞","Heatran":"席多藍恩","Regigigas":"雷吉奇卡斯","Giratina":"騎拉帝納","Cresselia":"克雷色利亞","Phione":"霏歐納","Manaphy":"瑪納霏","Darkrai":"達克萊伊","Shaymin":"謝米","Arceus":"阿爾宙斯","Victini":"比克提尼","Cobalion":"勾帕路翁","Terrakion":"代拉基翁","Virizion":"畢力吉翁","Tornadus":"龍捲雲","Thundurus":"雷電雲","Reshiram":"萊希拉姆","Zekrom":"捷克羅姆","Landorus":"土地雲","Kyurem":"酋雷姆","Keldeo":"凱路迪歐","Meloetta":"美洛耶塔","Genesect":"蓋諾賽克特","Xerneas":"哲爾尼亞斯","Yveltal":"伊裴爾塔爾","Zygarde":"基格爾德","Diancie":"蒂安希","Hoopa":"胡帕","Volcanion":"波爾凱尼恩","Type: Null":"屬性：空","Silvally":"銀伴戰獸","Tapu Koko":"卡璞・鳴鳴","Tapu Lele":"卡璞・蝶蝶","Tapu Bulu":"卡璞・哞哞","Tapu Fini":"卡璞・鰭鰭","Cosmog":"科斯莫古","Cosmoem":"科斯莫姆","Solgaleo":"索爾迦雷歐","Lunala":"露奈雅拉","Necrozma":"奈克洛茲瑪","Magearna":"瑪機雅娜","Marshadow":"瑪夏多","Zeraora":"捷拉奧拉","Meltan":"美錄坦","Melmetal":"美錄梅塔","Zacian":"蒼響","Zamazenta":"藏瑪然特","Eternatus":"無極汰那","Kubfu":"熊徒弟","Urshifu":"武道熊師","Zarude":"薩戮德","Regieleki":"雷吉艾勒奇","Regidrago":"雷吉鐸克","Glastrier":"雪暴馬","Spectrier":"靈幽馬","Calyrex":"蕾冠王","Enamorus":"眷戀雲","Wo-Chien":"古簡蝸","Chien-Pao":"古劍豹","Ting-Lu":"古鼎鹿","Chi-Yu":"古玉魚","Koraidon":"故勒頓","Miraidon":"密勒頓","Walking Wake":"波盪水","Iron Leaves":"鐵斑葉","Ogerpon":"厄詭椪","Terapagos":"太樂巴戈斯","Pecharunt":"桃歹郎","Nihilego":"虛吾伊德","Buzzwole":"爆肌蚊","Pheromosa":"費洛美螂","Xurkitree":"電束木","Celesteela":"鐵火輝夜","Kartana":"紙御劍","Guzzlord":"惡食大王","Poipole":"毒貝比","Naganadel":"四顎針龍","Stakataka":"壘磊石","Blacephalon":"砰頭小丑"};
+
+    const BIOME_MAP = {
+      "All Overworld biomes except Ocean biomes": "除海洋外所有主世界生態域",
+      "All Overworld biomes except Deep Dark": "除深暗界外所有主世界生態域",
+      "All Overworld biomes": "所有主世界生態域",
+      "All Ocean biomes": "所有海洋類生態域",
+      "All Jungle biomes": "所有叢林類生態域",
+      "All Forest biomes except Dark Forest": "除黑森林外所有森林類生態域",
+      "All Forest biomes": "所有森林類生態域",
+      "All River biomes": "所有河流類生態域",
+      "All Taiga biomes": "所有針葉林類生態域",
+      "All Plains biomes": "所有平原類生態域",
+      "All Savanna biomes": "所有熱帶草原類生態域",
+      "All Overworld biomes or Beach (Ultra-Rare)": "所有主世界生態域或海灘（極稀有）",
+      "All Hills biomes": "所有丘陵類生態域",
+      "All Nether biomes": "所有下界類生態域",
+      "All Cold biomes": "所有寒冷類生態域",
+      "All Mountain biomes": "所有山地類生態域",
+      "Snowy Plains": "積雪平原",
+      "Stony Shore": "石岸",
+      "Nether Wastes": "下界荒地",
+      "Savanna Plateau": "熱帶草原高原",
+      "Savanna": "熱帶草原",
+      "Jungle": "叢林",
+      "Bamboo Jungle": "竹林",
+      "Sparse Jungle": "稀疏叢林",
+      "Birch Forest": "樺木森林",
+      "Oak Forests": "橡木森林類",
+      "Oak Forest": "橡木森林",
+      "Dark Forest": "黑森林",
+      "Flower Forest": "繁花森林",
+      "Sunflower Plains": "向日葵平原",
+      "Deep Cold Ocean": "深冷海洋",
+      "Cold Ocean": "冷海洋",
+      "Frozen Ocean": "冰凍海洋",
+      "Deep Frozen Ocean": "深邃冰凍海洋",
+      "Deep Lukewarm Ocean": "深溫暖海洋",
+      "Lukewarm Ocean": "溫暖海洋",
+      "Deep Warm Ocean": "深暖海洋",
+      "Warm Ocean": "暖海洋",
+      "Deep Ocean": "深海",
+      "Ocean": "海洋",
+      "Taiga": "針葉林",
+      "Snowy Taiga": "積雪針葉林",
+      "Old Growth Pine Taiga": "原始松木針葉林",
+      "Old Growth Spruce Taiga": "原始杉木針葉林",
+      "Lush Desert": "繁茂沙漠（自訂）",
+      "Snowy Badlands": "積雪惡地",
+      "Badlands": "惡地",
+      "Eroded Badlands": "風蝕惡地",
+      "Wooded Badlands": "林地惡地",
+      "Desert": "沙漠",
+      "Alpine Highlands": "高山高地（自訂）",
+      "Glacial Chasm": "冰川裂谷（自訂）",
+      "Arid Highlands": "乾旱高地（自訂）",
+      "Cold Shrubland": "寒冷灌木地（自訂）",
+      "Wintry Lowlands": "冬季低地（自訂）",
+      "Blooming Plateau": "繁花高原（自訂）",
+      "Blooming Valley": "繁花谷（自訂）",
+      "Sakura Grove": "櫻花谷（自訂）",
+      "Sakura Valley": "櫻花峽谷（自訂）",
+      "Moonlight Valley": "月光谷（自訂）",
+      "Steppe": "草原（自訂）",
+      "White Cliffs": "白色峭壁（自訂）",
+      "Meadow": "草甸",
+      "Grove": "樹林",
+      "Snowy Slopes": "積雪斜坡",
+      "Stony Slopes": "石質斜坡",
+      "Jagged Peaks": "鋸齒山峰",
+      "Frozen Peaks": "冰封山峰",
+      "Stony Peaks": "石質山峰",
+      "Ice Spikes": "冰刺平原",
+      "Frozen River": "凍結河流",
+      "Snowy Beach": "積雪海灘",
+      "Plains": "平原",
+      "Beach": "海灘",
+      "River": "河流",
+      "Swamp": "沼澤",
+      "Mangrove Swamp": "紅樹林沼澤",
+      "Mushroom Fields": "蘑菇島",
+      "Dripstone Caves": "鐘乳石洞窟",
+      "Lush Caves": "繁茂洞窟",
+      "Frostfire Caves": "霜火洞窟（自訂）",
+      "Frozen Cliffs": "冰凍峭壁（自訂）",
+      "Deep Dark": "深暗界",
+      "Caves": "洞窟",
+      "Hot Shrubland": "炎熱灌木地（自訂）",
+      "Crimson Forest": "緋紅森林",
+      "Warped Forest": "扭曲森林",
+      "Basalt Deltas": "玄武岩三角洲",
+      "Soul Sand Valley": "靈魂砂谷",
+      "The End": "終界",
+      "Small End Islands": "終界小型島嶼",
+      "End Highlands": "終界高地",
+      "Open field (fixed biome not specified)": "開闊地帶（未指定固定生態域）",
+      "The End (structure page does not specify a fixed biome)": "終界（建築頁未指定固定生態域）",
+      "Nightmare Dimension": "噩夢維度",
+      "Distorted Dimension": "扭曲維度",
+      "Origin Dimension": "起源維度",
+      "Distortion World": "扭曲世界"
+    };
+    // Full-sentence translations are kept ahead of the token maps below.
+    // This avoids awkward fragments such as "使用 a 化石 化石復活機" when
+    // a source sentence contains several overlapping item/grammar tokens.
+    const EXACT_CONDITION_MAP = {
+      "The summoning feather/item is found inside the tower.": "召喚用羽毛／道具位於高塔內。",
+      "Ancient DNA + Cloning Catalyst; use a Fossil Resurrection Machine. The Meowth Balloon variant drops Radiant Cloning Catalyst for a guaranteed Shiny Mewtwo.": "遠古 DNA＋複製催化劑；使用化石復活機。喵喵氣球變體會掉落輻光複製催化劑，可保證取得閃光超夢。",
+      "Place the Origin Fossil on the Ancient Altar after obtaining the required materials.": "取得所需材料後，將起源化石放到遠古祭壇上。",
+      "Defeat the Old Sage in Burned Tower to obtain Rainbow Wing; use Rainbow Wing at Bell Tower to summon Ho-Oh.": "在燒焦塔擊敗老賢者取得彩虹之羽；在鈴鐺塔使用彩虹之羽召喚鳳王。",
+      "Raikou, Entei and Suicune can appear in or around the tower. The Old Sage drops Rainbow Wing.": "雷公、炎帝與水君可在高塔內或周圍出現；老賢者會掉落彩虹之羽。",
+      "Use Silver Wing at Whirl Island to summon Lugia; Silver Wing comes from Giovanni in Rocket Radio Tower.": "在漩渦島使用銀色之羽召喚洛奇亞；銀色之羽來自火箭隊廣播塔的坂木。",
+      "Giovanni drops Silver Wing. Synthetic Matrix and the materials for Shadow Soul Stone are obtained here.": "坂木會掉落銀色之羽；合成矩陣與製作暗影魂石的材料可在此取得。",
+      "Defeat Rival Red for the GS Ball, then use the button near the shrine while holding it.": "擊敗對手 Red 取得 GS 球；手持 GS 球時使用祭壇附近的按鈕。",
+      "Need Pebble Relic.": "需要卵石遺物。",
+      "Need Cryo Relic.": "需要冰霜遺物。",
+      "Need Metal Relic.": "需要金屬遺物。",
+      "Need Ocean Core to summon Kyogre. Blue Orb can be found in the structure.": "需要海洋核心才能召喚蓋歐卡；藍色寶珠可在建築內找到。",
+      "Collect 8 Magma Geostones, then craft Earth Core. Red Orb can be found in the structure.": "收集 8 個岩漿地石後製作大地核心；紅色寶珠可在建築內找到。",
+      "Defeat Team Aqua leader Ivan, Team Magma leader Max and Lyris; find Emerald Emblem and craft Sky Core.": "擊敗水艦隊首領 Ivan、火岩隊首領 Max 與 Lyris；找到翡翠徽章並製作天空核心。",
+      "Ruby Dew summons Latias; Sapphire Dew summons Latios. The dews come from Hoenn Champion Rocco.": "紅寶石露可召喚拉帝亞斯；藍寶石露可召喚拉帝歐斯。兩種露珠來自豐緣冠軍 Rocco。",
+      "Find the Melodic Tape in a barrel at the top of the structure.": "在建築頂端的桶子裡找到旋律磁帶。",
+      "Dig through Mega Meteorite blocks to find Deoxys summon item and hidden altar. Form-changing meteorites are scattered across the End.": "挖掘巨型隕石方塊，尋找代歐奇希斯召喚道具與隱藏祭壇。可改變型態的隕石散布在終界各處。",
+      "Need Adamant Orb for Dialga, Lustrous Orb for Palkia and a single-use Red Chain for both.": "帝牙盧卡需要金剛玉、帕路奇亞需要白玉寶珠；兩者共用一次性的紅色鎖鏈。",
+      "Need Azure Flute and all 18 Arceus Plates; Dialga and Palkia must be captured first, with an ingot obtained from the Distortion World.": "需要天界之笛與全部 18 塊阿爾宙斯石板；必須先捕捉帝牙盧卡與帕路奇亞，並取得來自扭曲世界的金屬錠。",
+      "Need Titan Relic. All five Titans must be in the party for the summoning to succeed.": "需要泰坦遺物；隊伍中必須有全部 5 隻泰坦，召喚才會成功。",
+      "Legendary Monuments structure; the spawn table lists Lake Acuity for Uxie.": "傳說紀念碑結構；生成表將由克希列在睿湖。",
+      "Legendary Monuments structure; the spawn table lists Lake Verity for Mesprit.": "傳說紀念碑結構；生成表將艾姆利多列在真實湖。",
+      "Legendary Monuments structure; the spawn table lists Lake Valor for Azelf.": "傳說紀念碑結構；生成表將亞克諾姆列在勇氣湖。",
+      "Obtain Lunar Wing; it is used at Fullmoon Island for Cresselia.": "取得月之羽；在滿月島使用它召喚克雷色利亞。",
+      "Need Dream Catcher and Lunar Wing.": "需要夢境捕捉器與月之羽。",
+      "Need Professor Oak's Letter; hold all five Gen 1 starter Pokémon in the party.": "需要大木博士的信；隊伍中要放入全部 5 隻第 1 世代初始寶可夢。",
+      "Enter the Distortion World through Turnback Cave, then use Red Chain at Giratina Island altar.": "透過歸途洞窟進入扭曲世界，再於騎拉帝納島祭壇使用紅色鎖鏈。",
+      "Legendary Monuments shrine; collect 8 stakes of the same type before using it.": "傳說紀念碑祭壇；使用前必須先收集同一類型的 8 根樁釘。",
+      "Star Core enables Eternamax; it is not the normal summon condition.": "星之核心可啟用無極巨化型態；它不是一般召喚條件。",
+      "Galarian Articuno appears at night; Galarian Zapdos during a thunderstorm; Galarian Moltres during the day.": "伽勒爾急凍鳥在夜晚出現；伽勒爾閃電鳥在雷暴期間出現；伽勒爾火焰鳥在白天出現。",
+      "Need Calyrex Crown; Iceroot carrot for Glastrier; Shaderoot carrot for Spectrier.": "需要蕾冠王王冠；雪暴馬需要冰根胡蘿蔔；靈幽馬需要影根胡蘿蔔。",
+      "Spark Relic summons Regieleki; Draco Relic summons Regidrago.": "雷電遺物可召喚雷吉艾勒奇；龍之遺物可召喚雷吉鐸克。",
+      "The structure page gives lore but no explicit summon item; the spawn table lists The End for Necrozma.": "建築頁提供背景資訊，但未列出明確召喚道具；生成表將奈克洛茲瑪列在終界。",
+      "Structure:; Articuno Tower; ; Forms: Galarian form; spawns under; Dyna Tree during the night": "建築：急凍鳥塔；型態：伽勒爾急凍鳥會在極巨樹的夜晚生成。",
+      "Structure: Zapdos Tower; ; Forms: Galarian form; spawns under; Dyna Tree during a thunderstorm": "建築：閃電鳥塔；型態：伽勒爾閃電鳥會在極巨樹的雷暴期間生成。",
+      "Structure: Moltres Tower; ; Forms: Galarian form spawns under; Dyna Tree during the day": "建築：火焰鳥塔；型態：伽勒爾火焰鳥會在極巨樹的白天生成。",
+      "Structure: Team Rocket Tower;": "建築：火箭隊高塔。",
+      "Structure: Origin Temple;": "建築：起源神殿。",
+      "Structure: Burned Tower; ; Forms: More common during thunderstorm": "建築：燒焦塔；型態：雷公在雷暴期間較常見。",
+      "Structure: Burned Tower; ; Forms: More common in the daytime": "建築：燒焦塔；型態：炎帝在白天較常見。",
+      "Structure: Burned Tower; ; Forms: More common during rain": "建築：燒焦塔；型態：水君在下雨時較常見。",
+      "Structure: Whirl Island; ; Forms: Shadow Lugia can be obtained by crafting the Shadow Soul Stone": "建築：漩渦島；型態：暗黑洛奇亞可透過製作暗影魂石取得。",
+      "Structure:; Bell Tower;": "建築：鈴鐺塔。",
+      "Structure: Ilex Shrine;": "建築：檜皮神社。",
+      "Structure: Regirock temple; ; Forms: Need Pebble Relic": "建築：雷吉洛克神殿；型態：需要卵石遺物。",
+      "Structure: Regice temple; ; Forms: Need Cryo Relic": "建築：雷吉艾斯神殿；型態：需要冰霜遺物。",
+      "Structure: Registeel temple; ; Forms: Need Metal Relic": "建築：雷吉斯奇魯神殿；型態：需要金屬遺物。",
+      "Structure:; Secret Garden; ; Forms: Need Ruby Dew": "建築：秘密花園；型態：需要紅寶石露。",
+      "Structure:; Secret Garden; ; Forms: Need Sapphire Dew": "建築：秘密花園；型態：需要藍寶石露。",
+      "Structure: Submerged in its Temple; ; Forms: Need Ocean Core": "建築：需在其神殿水下；型態：需要海洋核心。",
+      "Structure: Volcano; ; Forms: Need Earth Core": "建築：火山；型態：需要大地核心。",
+      "Structure: Sky Pillar; ; Forms: Need Sky Core": "建築：天空之柱；型態：需要天空核心。",
+      "Structure: Wish Cave; ; Forms: Need Melodic Tape (Vol. 1)": "建築：願望洞窟；型態：需要旋律磁帶（第 1 卷）。",
+      "Structure: Wish Cave; ; Forms: Need Melodic Tape": "建築：願望洞窟；型態：需要旋律磁帶。",
+      "Structure: Deoxys Meteorite; ; Forms: Need Meteorite Crystal": "建築：代歐奇希斯隕石；型態：需要隕石水晶。",
+      "Structure: Lake Acuity;": "建築：睿湖。",
+      "Structure: Lake Verity;": "建築：真實湖。",
+      "Structure: Lake Valor;": "建築：勇氣湖。",
+      "Structure: Spear Pillar;": "建築：槍之柱。",
+      "Structure: Snowpoint; Temple;": "建築：雪峰神殿。",
+      "Giratina Island;": "建築：騎拉帝納島。",
+      "Structure: FullMoon Island;": "建築：滿月島。",
+      "Structure: Newmoon Island;": "建築：新月島。",
+      "Sinnoh Temple;": "建築：神奧神殿。",
+      "Zygarde Core/cells; Forms: Core Percent Cell=10; Dripstone Caves; ; Core Percent Cells =Lush Caves": "基格爾德核心／細胞；型態：核心百分比細胞＝10；鐘乳石洞窟；核心百分比細胞＝繁茂洞窟。",
+      "Eternatus needs a Star Core to become Eternamax": "型態：無極汰那需要星之核心才能變為無極巨化型態。",
+      "Needed: Scroll of Darkness or Scroll of Water": "型態：需要黑暗卷軸或水之卷軸。",
+      "Structure:; Split Decision Temple; ; Forms: Need Spark Relic": "建築：分歧抉擇神殿；型態：需要雷電遺物。",
+      "Structure: Split Decision Temple; ; Forms: Need Draco Relic": "建築：分歧抉擇神殿；型態：需要龍之遺物。",
+      "Structure: Crown Cemetery Spire; ; Forms: Need Iceroot carrots": "建築：王冠墓園／王冠尖塔；型態：需要冰根胡蘿蔔。",
+      "Structure:; Crown Cemetery; ; Forms: Need Shaderoot carrot": "建築：王冠墓園；型態：需要影根胡蘿蔔。",
+      "Structure: Crown Cemetery or Crown Spire; ; Forms: Need Calyrex Crown": "建築：王冠墓園或王冠尖塔；型態：需要蕾冠王王冠。",
+      "Grasswither Shrine; ; Forms: To use the shrines you will have to first collect 8 stakes of the same type": "草枯祭壇；使用祭壇前，必須先收集同一類型的 8 根樁釘。",
+      "Icerend Shrine; ; Forms: To use the shrines you will have to first collect 8 stakes of the same type": "冰蝕祭壇；使用祭壇前，必須先收集同一類型的 8 根樁釘。",
+      "Groundblight Shrine; ; Forms: To use the shrines you will have to first collect 8 stakes of the same type": "地瘴祭壇；使用祭壇前，必須先收集同一類型的 8 根樁釘。",
+      "Firescourge Shrine; ; Forms: To use the shrines you will have to first collect 8 stakes of the same type": "火災祭壇；使用祭壇前，必須先收集同一類型的 8 根樁釘。",
+      "Dawn Tower, Dusk Tower": "黎明高塔、黃昏高塔（特殊建築路線）。",
+      "Near a Purpur block": "靠近紫珀方塊。",
+      "Near Iron Block": "靠近鐵方塊。",
+      "Amethyst Geode": "紫水晶洞。",
+      "Use Resurrection Machine": "使用化石復活機。",
+      "Resurrection Machine": "需要使用化石復活機。",
+      "Fossil: Nether Star + Dubious Disk +Doom Fossil;": "化石：地獄之星＋可疑磁片＋災難化石。",
+      "Fossil: Loot dropped by the Team Rocket; Scientist": "化石：火箭隊科學家掉落的戰利品。",
+      "Type Null’s evolution": "屬性：空的進化。",
+      "Type Null's evolution": "屬性：空的進化。",
+      "Evolves from Meltan when it is at level 70 and holding an anvil": "美錄坦在 70 級且手持鐵砧時進化。",
+      "Hold Moonlight Amulet while sleeping during the Night cycle to enter Nightmare Dimension; use Nightmare Weaver.": "手持月光護符，在夜晚循環期間睡覺以進入噩夢維度；再使用噩夢編織器。",
+      "Obtain Manaphy Egg. Breed Manaphy with Ditto in a Pasture Block to obtain Phione Egg.": "取得瑪納霏蛋；在牧場方塊中讓瑪納霏與百變怪繁殖，以取得霏歐納蛋。",
+      "Combine Heat Fragment and Heat Splinter into Magmatic Cluster, then process it in Stark Forge to make Magma Stone.": "將熱碎片與熱裂片合成岩漿聚合物，再於鋼鐵鍛造爐加工製作熔岩石。",
+      "Structure: Flower Paradise;": "建築：花之樂園。",
+      "Structure: Stark Mountain;": "建築：鋼鐵山。",
+      "Forms: Eternatus needs a Star Core to become Eternamax": "型態：無極汰那需要星之核心才能變為無極巨化型態。",
+      "Forms: Needed: Scroll of Darkness or Scroll of Water": "型態：需要黑暗卷軸或水之卷軸。",
+      "Rain": "下雨。",
+      "Thunderstorm": "雷暴。",
+      "Weather Clear": "晴天。",
+      "Weather clear": "晴天。",
+      "Day": "白天。",
+      "Daytime": "白天。",
+      "Night": "夜晚。",
+      "During a Thunderstorm": "雷暴期間。"
+    };
+    const PHRASE_MAP = {
+      "Weather Clear": "晴天",
+      "Weather clear": "晴天",
+      "During a Thunderstorm": "雷暴期間",
+      "during a thunderstorm": "雷暴期間",
+      "Thunderstorm": "雷暴",
+      "Storm": "暴風雨",
+      "Rain": "下雨",
+      "Daytime": "白天",
+      "Day": "白天",
+      "Night": "夜晚",
+      "Dusk": "黃昏",
+      "Dawn": "黎明",
+      "morning": "早晨",
+      "during the night": "夜晚期間",
+      "during the day": "白天期間",
+      "during the Night cycle": "夜晚循環期間",
+      "Also by fishing": "也可透過釣魚取得",
+      "Also by Fishing": "也可透過釣魚取得",
+      "Submerged": "需在水下",
+      "Seafloor": "海床",
+      "underwater": "水下",
+      "inside the structure": "建築內",
+      "inside the tower": "高塔內",
+      "in or around the tower": "高塔內或周圍",
+      "found inside": "在內部找到",
+      "can appear": "可以出現",
+      "appears": "會出現",
+      "spawns under": "會在……條件下生成",
+      "guaranteed": "保證",
+      "variant": "變體",
+      "forms": "型態",
+      "Forms:": "型態：",
+      "The source table lists": "來源表列出",
+      "The structure page lists": "建築頁列出",
+      "The structure page gives": "建築頁提供",
+      "The source also links": "來源也連結到",
+      "The dews come from": "露珠來自",
+      "The materials for": "……所需材料",
+      "The summoning feather/item is found inside the tower.": "召喚用羽毛／道具位於高塔內。",
+      "Use the button near the shrine while holding it.": "手持該道具時，使用祭壇附近的按鈕。",
+      "Dig through Mega Meteorite blocks to find Deoxys summon item and hidden altar.": "挖掘巨型隕石方塊，尋找代歐奇希斯召喚道具與隱藏祭壇。",
+      "Form-changing meteorites are scattered across the End.": "可改變型態的隕石散布在終界各處。",
+      "The Meowth Balloon variant drops Radiant Cloning Catalyst for a guaranteed Shiny Mewtwo.": "喵喵氣球變體會掉落輻光複製催化劑，可保證取得閃光超夢。",
+      "The dews come from Hoenn Champion Rocco.": "紅寶石露與藍寶石露來自豐緣冠軍 Rocco。",
+      "Blue Orb can be found in the structure.": "藍色寶珠可在建築內找到。",
+      "Red Orb can be found in the structure.": "紅色寶珠可在建築內找到。",
+      "All five Titans must be in the party for the summoning to succeed.": "隊伍中必須有全部 5 隻泰坦，召喚才會成功。",
+      "Giovanni drops Silver Wing. Synthetic Matrix and the materials for Shadow Soul Stone are obtained here.": "坂木會掉落銀色之羽；合成矩陣與製作暗影魂石的材料可在此取得。",
+      "Find the Melodic Tape in a barrel at the top of the structure.": "在建築頂端的桶子裡找到旋律磁帶。",
+      "Defeat Team Aqua leader Ivan, Team Magma leader Max and Lyris; find Emerald Emblem and craft Sky Core.": "擊敗水艦隊首領 Ivan、火岩隊首領 Max 與 Lyris；找到翡翠徽章並製作天空核心。",
+      "Hold Moonlight Amulet while sleeping during the Night cycle to enter Nightmare Dimension; use Nightmare Weaver.": "手持月光護符並在夜晚循環期間睡覺，以進入噩夢維度；再使用噩夢編織器。",
+      "Obtain Manaphy Egg. Breed Manaphy with Ditto in a Pasture Block to obtain Phione Egg.": "取得瑪納霏蛋；在牧場方塊中讓瑪納霏與百變怪繁殖，以取得霏歐納蛋。",
+      "Combine Heat Fragment and Heat Splinter into Magmatic Cluster, then process it in Stark Forge to make Magma Stone.": "將熱碎片與熱裂片合成岩漿聚合物，再於 Stark Forge 加工製作熔岩石。",
+      "Enter the Distortion World through Turnback Cave, then use Red Chain at Giratina Island altar.": "透過歸途洞窟進入扭曲世界，再於騎拉帝納島祭壇使用紅色鎖鏈。",
+      "Galarian Articuno appears at night; Galarian Zapdos during a thunderstorm; Galarian Moltres during the day.": "伽勒爾急凍鳥在夜晚出現；伽勒爾閃電鳥在雷暴期間出現；伽勒爾火焰鳥在白天出現。",
+      "Star Core enables Eternamax; it is not the normal summon condition.": "星之核心可啟用無極巨化型態；它不是一般召喚條件。",
+      "The structure page gives lore but no explicit summon item; the spawn table lists The End for Necrozma.": "建築頁提供背景資訊，但沒有列出明確召喚道具；生成表將奈克洛茲瑪列在終界。",
+      "Distortion World": "扭曲世界",
+      "Turnback Cave": "歸途洞窟",
+      "Giratina Island": "騎拉帝納島",
+      "Stark Forge": "鋼鐵鍛造爐",
+      "Galarian form": "伽勒爾型態",
+      "More common during thunderstorm": "雷暴期間較常見",
+      "More common in the daytime": "白天較常見",
+      "More common during rain": "下雨時較常見",
+      "Near a Purpur block": "靠近紫珀方塊",
+      "Core Percent Cell": "核心百分比細胞",
+      "Zygarde Core": "基格爾德核心",
+      "Zygarde Core/cells": "基格爾德核心／細胞",
+      "button near the shrine": "祭壇附近的按鈕",
+      "the button": "按鈕",
+      "The Old Sage drops": "老賢者掉落",
+      "The required materials": "所需材料",
+      "required materials": "所需材料",
+      "Legendary Monuments": "傳說紀念碑",
+      "To use the shrines you will have to first collect ": "使用祭壇前，必須先收集 ",
+      " of the same type": "（同一類型）",
+      "the shrines": "祭壇",
+      "found in a barrel": "在桶子裡找到",
+      "at the top of the structure": "在建築頂端",
+      "hidden altar": "隱藏祭壇",
+      "Form-changing meteorites": "可改變型態的隕石",
+      "comes from": "來自",
+      "leader": "首領",
+      "champion": "冠軍",
+      "Pokémon": "寶可夢",
+      "the ": "",
+      "The ": "",
+      "feather": "羽毛",
+      "item": "道具",
+      "found": "找到",
+      "is found": "位於",
+      "required": "所需",
+      "materials": "材料",
+      "same type": "同一類型",
+      "in the structure": "在建築內",
+      "Structure": "結構",
+      "Fossil": "化石",
+      "Evolution": "進化",
+      "evolves from": "由……進化",
+      "Evolves from": "由……進化",
+      "Use Resurrection Machine": "使用化石復活機",
+      "Resurrection Machine": "化石復活機",
+      "Use ": "使用 ",
+      "use ": "使用 ",
+      "Obtain ": "取得 ",
+      "obtain ": "取得 ",
+      "Obtained ": "已取得 ",
+      "Defeat ": "擊敗 ",
+      "defeat ": "擊敗 ",
+      "Collect ": "收集 ",
+      "collect ": "收集 ",
+      "Craft ": "製作 ",
+      "craft ": "製作 ",
+      "Combine ": "合成 ",
+      "combine ": "合成 ",
+      "Process ": "加工 ",
+      "process ": "加工 ",
+      "Place ": "放置 ",
+      "place ": "放置 ",
+      "Need ": "需要 ",
+      "need ": "需要 ",
+      "Needed:": "需要：",
+      "while holding ": "手持 ",
+      "While holding ": "手持 ",
+      "needs ": "需要 ",
+      "Needs ": "需要 ",
+      "after obtaining ": "取得……後",
+      "before using it": "使用前",
+      "to summon ": "以召喚 ",
+      "summon ": "召喚 ",
+      "summons ": "召喚 ",
+      "summoning ": "召喚用",
+      "drops ": "掉落 ",
+      "drop ": "掉落 ",
+      "for a guaranteed Shiny": "以保證取得閃光",
+      "can be obtained by crafting": "可透過製作取得",
+      "must be captured first": "必須先捕捉",
+      "must be in the party": "必須放在隊伍中",
+      "in the party": "在隊伍中",
+      "all five": "全部 5 隻",
+      "same type": "同一類型",
+      "fixed biome not specified": "未指定固定生態域",
+      "not the normal summon condition": "不是一般召喚條件",
+      "Near a Minecraft Village": "靠近 Minecraft 村莊",
+      "Near a coweb": "靠近蜘蛛網",
+      "Near a cake": "靠近蛋糕",
+      "Near Coal Ore": "靠近煤礦",
+      "Near Iron Block": "靠近鐵方塊",
+      "Near lightining rod": "靠近避雷針",
+      "More common": "較常見",
+      "more common": "較常見",
+      "only in": "僅在",
+      "in Mansion": "在林地府邸內",
+      "Mansion": "林地府邸",
+      "village": "村莊",
+      "villages": "村莊",
+      "All ": "所有 ",
+      " biomes": " 生態域",
+      "except": "排除",
+      "during": "期間",
+      "or": "或",
+      "and": "與"
+    };
+    const ITEM_MAP = {
+      "Ancient DNA": "遠古 DNA",
+      "Cloning Catalyst": "複製催化劑",
+      "Radiant Cloning Catalyst": "輻光複製催化劑",
+      "Fossil Resurrection Machine": "化石復活機",
+      "Origin Fossil": "起源化石",
+      "Ancient Altar": "遠古祭壇",
+      "Shadow Soul Stone": "暗影魂石",
+      "Synthetic Matrix": "合成矩陣",
+      "Dubious Disk": "可疑磁片",
+      "Nether Star": "地獄之星",
+      "Doom Fossil": "災難化石",
+      "Mega Meteorite": "巨型隕石",
+      "Manaphy Egg": "瑪納霏蛋",
+      "Phione Egg": "霏歐納蛋",
+      "Ditto": "百變怪",
+      "anvil": "鐵砧",
+      "Rainbow Wing": "彩虹之羽",
+      "Silver Wing": "銀色之羽",
+      "GS Ball": "GS 球",
+      "Ocean Core": "海洋核心",
+      "Earth Core": "大地核心",
+      "Sky Core": "天空核心",
+      "Ruby Dew": "紅寶石露",
+      "Sapphire Dew": "藍寶石露",
+      "Red Chain": "紅色鎖鏈",
+      "Azure Flute": "天界之笛",
+      "Arceus Plates": "阿爾宙斯石板",
+      "Adamant Orb": "金剛玉",
+      "Lustrous Orb": "白玉寶珠",
+      "Titan Relic": "泰坦遺物",
+      "Lunar Wing": "月之羽",
+      "Dream Catcher": "夢境捕捉器",
+      "Moonlight Amulet": "月光護符",
+      "Nightmare Weaver": "噩夢編織器",
+      "Professor Oak's Letter": "大木博士的信",
+      "Professor Oak’s Letter": "大木博士的信",
+      "Oak Letter": "大木博士的信",
+      "Heat Fragment": "熱碎片",
+      "Heat Splinter": "熱裂片",
+      "Magmatic Cluster": "岩漿聚合物",
+      "Magma Stone": "熔岩石",
+      "Magma Geostones": "岩漿地石",
+      "Magma Geostone": "岩漿地石",
+      "Stark Forge": "鋼鐵鍛造爐",
+      "Spark Relic": "雷電遺物",
+      "Draco Relic": "龍之遺物",
+      "Iceroot carrots": "冰根胡蘿蔔",
+      "Iceroot carrot": "冰根胡蘿蔔",
+      "Shaderoot carrot": "影根胡蘿蔔",
+      "Star Core": "星之核心",
+      "Meteorite Crystal": "隕石水晶",
+      "Melodic Tape (Vol. 1)": "旋律磁帶（第 1 卷）",
+      "Melodic Tape": "旋律磁帶",
+      "Amethyst Geode": "紫水晶洞",
+      "Purpur block": "紫珀方塊",
+      "Pasture Block": "牧場方塊",
+      "Scroll of Darkness": "黑暗卷軸",
+      "Scroll of Water": "水之卷軸",
+      "Emerald Emblem": "翡翠徽章",
+      "Blue Orb": "藍色寶珠",
+      "Red Orb": "紅色寶珠",
+      "Pebble Relic": "卵石遺物",
+      "Cryo Relic": "冰霜遺物",
+      "Metal Relic": "金屬遺物",
+      "stakes": "樁釘",
+      "stake": "樁釘",
+      "Old Sage": "老賢者",
+      "Rival Red": "對手 Red",
+      "Giovanni": "坂木",
+      "Lyris": "Lyris",
+      "Ivan": "Ivan",
+      "Max": "Max",
+      "Meowth Balloon": "喵喵氣球"
+    };
+    const STRUCTURE_CONDITION_MAP = {
+      "Articuno Tower": "急凍鳥塔",
+      "Zapdos Tower": "閃電鳥塔",
+      "Moltres Tower": "火焰鳥塔",
+      "Team Rocket Tower": "火箭隊高塔",
+      "Burned Tower": "燒焦塔",
+      "Bell Tower": "鈴鐺塔",
+      "Whirl Island": "漩渦島",
+      "Rocket Radio Tower": "火箭隊廣播塔",
+      "Origin Temple": "起源神殿",
+      "Ilex Shrine": "檜皮神社",
+      "Regirock Temple": "雷吉洛克神殿",
+      "Regice Temple": "雷吉艾斯神殿",
+      "Registeel Temple": "雷吉斯奇魯神殿",
+      "Secret Garden": "秘密花園",
+      "Split Decision Temple": "分歧抉擇神殿",
+      "Crown Cemetery": "王冠墓園",
+      "Crown Spire": "王冠尖塔",
+      "Dawn Tower": "黎明高塔",
+      "Dusk Tower": "黃昏高塔",
+      "Dyna Tree": "極巨樹",
+      "Sinnoh Temple": "神奧神殿",
+      "FullMoon Island": "滿月島",
+      "Fullmoon Island": "滿月島",
+      "Newmoon Island": "新月島"
+    };
+    const RARITY_ZH = { "Ultra-Rare": "極稀有", "Rare": "稀有", "Uncommon": "不常見", "Common": "常見", "—": "—" };
+    const GENERATION_ORDER = [
+      "Gen. 1 Kanto", "Gen. 2 Johto", "Gen. 3 Hoenn", "Gen. 4 Sinnoh",
+      "Gen. 5 Unova", "Gen. 6 Kalos", "Gen. 7 Alola", "Gen. 8 Galar／Hisui",
+      "Gen. 9 Paldea", "Unspecified", "究極異獸"
+    ];
+    const RARITY_ORDER = { "Ultra-Rare": 0, "Rare": 1, "Uncommon": 2, "Common": 3, "—": 4 };
+    const STRUCTURE_ROUTE_WORDS = /(Structure|Tower|Temple|Shrine|Island|Dyna Tree|Cemetery|Spire|Meteorite|Cocoon)/i;
+    const SPECIAL_ROUTE_WORDS = /(Fossil|Resurrection Machine|Evolves|Type Null|Evolution)/i;
+    const DIMENSION_WORDS = /(The End|Distorted Dimension|Nightmare Dimension|Origin Dimension|Distortion World)/i;
+    const WATER_WORDS = /(Ocean|River|Lake|Seafloor|Submerged|fishing)/i;
+    const CAVE_WORDS = /(Cave|Caves|Chasm|Deep Dark|MaxY|MinY)/i;
+
+    const state = { section: "spawn", query: "", category: "all", acquisition: "all", generation: "all", sort: "generation" };
+    const $ = (id) => document.getElementById(id);
+
+    function escapeHtml(value) {
+      return String(value ?? "—").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[char]));
+    }
+    function sortedKeys(map) {
+      return Object.keys(map).sort((a, b) => b.length - a.length);
+    }
+    function replaceMap(text, map) {
+      let result = String(text ?? "—");
+      for (const key of sortedKeys(map)) {
+        const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        // Only add word boundaries when the mapping key actually starts or
+        // ends with a letter. This keeps keys such as "Need " working while
+        // avoiding accidental replacements inside longer English words.
+        const left = /^[A-Za-z]/.test(key) ? "(?<![A-Za-z])" : "";
+        const right = /[A-Za-z]$/.test(key) ? "(?![A-Za-z])" : "";
+        result = result.replace(new RegExp(`${left}${escaped}${right}`, "gi"), map[key]);
+      }
+      return result;
+    }
+    function translateBiome(text) {
+      if (!text || text === "—") return "未列出生態域";
+      let result = replaceMap(text, BIOME_MAP);
+      result = result
+        .replace(/\bMaxY\s*=\s*/gi, "最高 Y=")
+        .replace(/\bMinY\s*=\s*/gi, "最低 Y=")
+        .replace(/\(\s*(最高|最低) Y=([^)]*)\)/g, "（$1 Y=$2）")
+        .replace(/\s+（/g, "（")
+        .replace(/\s*;\s*/g, "；")
+        .replace(/\s*,\s*/g, "、")
+        .replace(/\s+/g, " ")
+        .trim();
+      return result;
+    }
+    function translateCondition(text) {
+      if (!text || text === "—") return "沒有額外條件";
+      const raw = String(text).replace(/\s+/g, " ").trim();
+      if (Object.prototype.hasOwnProperty.call(EXACT_CONDITION_MAP, raw)) {
+        return EXACT_CONDITION_MAP[raw];
+      }
+      // Apply specific item/structure names before generic grammar tokens
+      // ("Fossil", "Use", "the", etc.) so longer phrases stay intact.
+      let result = replaceMap(raw, BIOME_MAP);
+      result = replaceMap(result, ITEM_MAP);
+      result = replaceMap(result, STRUCTURE_CONDITION_MAP);
+      result = replaceMap(result, PHRASE_MAP);
+      result = translatePokemon(result);
+      result = result
+        .replace(/\bMaxY\s*=\s*/gi, "最高 Y=")
+        .replace(/\bMinY\s*=\s*/gi, "最低 Y=")
+        .replace(/\s*;\s*/g, "；")
+        .replace(/\s*,\s*/g, "、")
+        .replace(/\s+/g, " ")
+        .replace(/:\s*/g, "：")
+        .replace(/\s+([。；，、])/g, "$1")
+        .replace(/\s+（/g, "（")
+        .replace(/([；。])\s*[；。]+/g, "$1")
+        .trim();
+      return result;
+    }
+    function translatePokemon(text) {
+      if (!text || text === "—") return "—";
+      const forms = {
+        "Galarian Articuno": "伽勒爾急凍鳥",
+        "Galarian Zapdos": "伽勒爾閃電鳥",
+        "Galarian Moltres": "伽勒爾火焰鳥",
+        "Shadow Lugia": "暗黑洛奇亞",
+        "Armored Mewtwo": "裝甲超夢",
+        "Calyrex": "蕾冠王",
+        "Ho-Oh": "鳳王"
+      };
+      let result = replaceMap(text, forms);
+      result = replaceMap(result, NAME_MAP);
+      return result.replace(/\s*,\s*/g, "、").replace(/\s*\/\s*/g, "／");
+    }
+    function translateStructure(text) {
+      if (!text || text === "—") return "—";
+      const structureMap = {
+        "Articuno Tower": "急凍鳥塔",
+        "Zapdos Tower": "閃電鳥塔",
+        "Moltres Tower": "火焰鳥塔",
+        "Team Rocket Tower": "火箭隊高塔",
+        "Mew Temple／Origin Temple": "夢幻神殿／起源神殿",
+        "Bell Tower": "鈴鐺塔",
+        "Burned Tower": "燒焦塔",
+        "Whirl Island": "漩渦島",
+        "Rocket Radio Tower": "火箭隊廣播塔",
+        "Ilex Shrine": "檜皮神社",
+        "Regirock Temple": "雷吉洛克神殿",
+        "Regice Temple": "雷吉艾斯神殿",
+        "Registeel Temple": "雷吉斯奇魯神殿",
+        "Kyogre Dome／Temple": "蓋歐卡穹頂／神殿",
+        "Groudon Volcano": "固拉多火山",
+        "Sky Pillar": "天空之柱",
+        "Secret Garden": "秘密花園",
+        "Wish Cave": "願望洞窟",
+        "Deoxys Meteorite": "代歐奇希斯隕石",
+        "Spear Pillar": "槍之柱",
+        "Temple of Sinnoh": "神奧神殿",
+        "Snowpoint Temple": "雪峰神殿",
+        "Lake Acuity": "睿湖",
+        "Lake Verity": "真實湖",
+        "Lake Valor": "勇氣湖",
+        "Crescent Isle": "新月島",
+        "Fullmoon Island": "滿月島",
+        "Newmoon Island": "新月島（噩夢路線）",
+        "Flower Paradise": "花之樂園",
+        "Temple of the Sea": "海之神殿",
+        "Stark Mountain": "鋼鐵山",
+        "Turnback Cave → Giratina Island": "歸途洞窟 → 騎拉帝納島",
+        "Grasswither Shrine": "草枯祭壇",
+        "Icerend Shrine": "冰蝕祭壇",
+        "Groundblight Shrine": "地瘴祭壇",
+        "Firescourge Shrine": "火災祭壇",
+        "Eternatus Cocoon": "無極汰那繭",
+        "Dyna Tree": "極巨樹",
+        "Calyrex Shrines／Crown Cemetery／Crown Spire": "蕾冠王祭壇／王冠墓園／王冠尖塔",
+        "Split Decision Temple": "分歧抉擇神殿",
+        "Necrozma Towers": "奈克洛茲瑪高塔",
+        "Dawn Tower": "黎明高塔",
+        "Dusk Tower": "黃昏高塔",
+        "Secret Garden": "秘密花園",
+        "FullMoon Island": "滿月島",
+        "Team Rocket": "火箭隊", "Rocket Radio": "火箭隊廣播",
+        "Tower": "高塔", "Towers": "高塔", "Temple": "神殿", "Shrine": "祭壇",
+        "Island": "島", "Garden": "花園", "Cave": "洞窟",
+        "Volcano": "火山", "Pillar": "石柱", "Dome": "穹頂",
+        "Meteorite": "隕石", "Cemetery": "墓園", "Spire": "尖塔",
+        "Cocoon": "蛹", "Secret": "秘密", "Sky": "天空",
+        "Wish": "願望", "Fullmoon": "滿月", "Newmoon": "新月",
+        "Crown": "王冠", "Split Decision": "分歧抉擇",
+        "Dyna Tree": "極巨樹", "Necrozma Towers": "奈克洛茲瑪高塔"
+      };
+      let result = replaceMap(text, structureMap);
+      result = translatePokemon(result);
+      result = replaceMap(result, structureMap);
+      return result.replace(/\s*\/\s*/g, "／");
+    }
+    function rarityZh(value) { return RARITY_ZH[value] || value; }
+    function normalizeMatchText(value) {
+      return String(value ?? "")
+        .replace(/[’']/g, "")
+        .replace(/[:\/／→,、;()（）+]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .toLowerCase();
+    }
+    function escapeRegExp(value) {
+      return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+    function pokemonSlug(name) {
+      return normalizeMatchText(name)
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+    }
+    function structureSlug(name) {
+      return normalizeMatchText(name)
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+    }
+    function pokemonImageSlug(name) {
+      return pokemonSlug(name);
+    }
+    const POKEMON_ALIASES = {
+      Articuno: ["Galarian Articuno"],
+      Zapdos: ["Galarian Zapdos"],
+      Moltres: ["Galarian Moltres"],
+      Lugia: ["Shadow Lugia"],
+      Mewtwo: ["Armored Mewtwo", "Shiny Mewtwo"],
+      Cresselia: ["Cresselia（前置）"],
+      Poipole: ["Dawn Tower", "Dusk Tower"]
+    };
+    // Some structure pages mention a Pokémon in a route note rather than in
+    // the structure table's main Pokémon cell. Keep those relationships
+    // explicit so both sides of the guide can link to one another.
+    const BUILDING_ROUTE_ALIASES = {
+      "Necrozma Towers": ["Necrozma", "Poipole"]
+    };
+    function pokemonAliases(name) {
+      return [name, ...(POKEMON_ALIASES[name] || [])]
+        .sort((a, b) => b.length - a.length);
+    }
+    function textContainsPokemon(text, name) {
+      const normalized = normalizeMatchText(text);
+      return pokemonAliases(name).some((alias) => {
+        const candidate = normalizeMatchText(alias);
+        if (!candidate) return false;
+        return new RegExp(`(?:^| )${escapeRegExp(candidate)}(?:$| )`, "i").test(normalized);
+      });
+    }
+    function relatedPokemon(building) {
+      const explicit = (BUILDING_ROUTE_ALIASES[building.structure] || [])
+        .map((name) => normalizeMatchText(name));
+      return DATA.spawn.filter((row) =>
+        textContainsPokemon(building.pokemonOriginal, row.name) ||
+        explicit.includes(normalizeMatchText(row.name))
+      );
+    }
+    function relatedBuildings(name) {
+      return DATA.buildings.filter((building) =>
+        textContainsPokemon(building.pokemonOriginal, name) ||
+        (BUILDING_ROUTE_ALIASES[building.structure] || [])
+          .some((alias) => normalizeMatchText(alias) === normalizeMatchText(name))
+      );
+    }
+    function hasWildRoute(row) {
+      if (typeof row.wildAvailable === "boolean") return row.wildAvailable;
+      const value = String(row.spawnOriginal ?? "—");
+      return value !== "—" && !/^(Fossil|Evolves|Type Null|Evolution)/i.test(value);
+    }
+    function hasStructureRoute(row) {
+      const text = `${row.spawnOriginal} ${row.weatherOriginal} ${row.otherOriginal}`;
+      return STRUCTURE_ROUTE_WORDS.test(text) ||
+        SPECIAL_ROUTE_WORDS.test(text) ||
+        relatedBuildings(row.name).length > 0;
+    }
+    function hasExplicitStructureRoute(row) {
+      const text = `${row.spawnOriginal} ${row.weatherOriginal} ${row.otherOriginal}`;
+      return STRUCTURE_ROUTE_WORDS.test(text) || relatedBuildings(row.name).length > 0;
+    }
+    function routeMatches(row, route) {
+      if (route === "wild") return hasWildRoute(row);
+      if (route === "structure") return hasStructureRoute(row);
+      return true;
+    }
+    function routeBadges(row) {
+      const badges = [];
+      if (hasWildRoute(row)) badges.push('<span class="badge wild">自然生成</span>');
+      if (hasStructureRoute(row)) badges.push('<span class="badge route">建築／特殊取得</span>');
+      if (!badges.length) badges.push('<span class="badge route">特殊取得</span>');
+      return badges.join("");
+    }
+    function anchorLink(id, label, section) {
+      return `<a href="#${escapeHtml(id)}" data-target-section="${section}" data-target-id="${escapeHtml(id)}">${escapeHtml(label)}</a>`;
+    }
+    function naturalRouteKind(row) {
+      const text = `${row.spawnOriginal} ${row.weatherOriginal} ${row.otherOriginal}`;
+      if (/^(Fossil|Evolves|Type Null|Evolution)/i.test(String(row.spawnOriginal ?? "")) ||
+          /Resurrection Machine/i.test(text)) return "fossil";
+      if (DIMENSION_WORDS.test(text)) return "dimension";
+      if (CAVE_WORDS.test(text)) return "cave";
+      if (WATER_WORDS.test(text)) return "water";
+      return "surface";
+    }
+    function isSpecialSpawnRoute(value) {
+      return /^(Fossil|Evolves|Type Null|Evolution)/i.test(String(value ?? "").trim());
+    }
+    function translateSpawnLocation(value) {
+      if (!value || value === "—") return translateBiome(value);
+      return isSpecialSpawnRoute(value) ? translateCondition(value) : translateBiome(value);
+    }
+    function naturalDetailOriginal(row) {
+      const wild = hasWildRoute(row);
+      const location = wild
+        ? `Wild encounter route: search the listed biome(s) ${row.spawnOriginal}. A biome listing makes the Pokémon eligible there; it does not guarantee a spawn.`
+        : isSpecialSpawnRoute(row.spawnOriginal)
+          ? `Special acquisition route: follow the listed fossil or evolution requirement ${row.spawnOriginal}. This is not a normal open-world spawn.`
+          : "Wild encounter route: the source table does not list a normal open-world biome; use the special, fossil, evolution or structure route instead.";
+      const rarity = row.rarity === "—" ? "" : `Rarity: ${row.rarity}.`;
+      const condition = row.weatherOriginal !== "—" || row.otherOriginal !== "—"
+        ? `Apply the listed extra conditions at the same time: ${[row.weatherOriginal, row.otherOriginal].filter((value) => value && value !== "—").join("; ")}.`
+        : "No additional weather or time restriction is listed.";
+      const kind = naturalRouteKind(row);
+      const routeNote = kind === "water"
+        ? "Water-route note: follow the listed water biome; only use underwater, seafloor or fishing positioning when the source explicitly says so."
+        : kind === "cave"
+          ? "Cave-route note: enter the indicated cave biome and check the Y-level restriction when one is listed."
+          : kind === "dimension"
+            ? "Dimension-route note: enter the specified dimension before searching for the Pokémon."
+            : kind === "fossil"
+              ? "This is a fossil, resurrection-machine or evolution route rather than a normal open-world encounter."
+              : "";
+      const rarityNote = row.rarity === "Ultra-Rare"
+        ? "Ultra-Rare means the encounter frequency is extremely low; it is not a spawn guarantee."
+        : "";
+      const structureNote = hasExplicitStructureRoute(row)
+        ? "A linked structure or summon route is also available; use the building links on this card."
+        : "";
+      return [location, rarity, condition, rarityNote, routeNote, structureNote].filter(Boolean).join(" ");
+    }
+    function naturalDetailZh(row) {
+      const wild = hasWildRoute(row);
+      const location = wild
+        ? `野外遭遇路線：到指定生態域「${translateBiome(row.spawnOriginal)}」尋找。列出生態域代表有機會在那裡生成，不代表一定會出現。`
+        : isSpecialSpawnRoute(row.spawnOriginal)
+          ? `特殊取得路線：依照「${translateCondition(row.spawnOriginal)}」的化石或進化要求取得；這不是一般開放世界生成。`
+          : "野外遭遇路線：原表沒有列出一般開放世界生態域，請改走特殊取得、化石、進化或建築路線。";
+      const rarity = row.rarity === "—" ? "" : `稀有度：${rarityZh(row.rarity)}（${row.rarity}）。`;
+      const condition = row.weatherOriginal !== "—" || row.otherOriginal !== "—"
+        ? `需要同時滿足的附加條件：${[row.weatherOriginal, row.otherOriginal].filter((value) => value && value !== "—").map(translateCondition).map((value) => value.replace(/[。.!?]+$/g, "")).join("；")}。`
+        : "原表沒有列出額外天氣或時間限制。";
+      const kind = naturalRouteKind(row);
+      const routeNote = kind === "water"
+        ? "水域提示：依指定水域生態域尋找；只有原文寫明水下、海床或釣魚時，才需要特別採用該位置。"
+        : kind === "cave"
+          ? "洞窟提示：進入指定洞窟生態域，並留意原文列出的 Y 座標限制。"
+          : kind === "dimension"
+            ? "維度提示：先進入指定維度，再在該維度中尋找。"
+            : kind === "fossil"
+              ? "這筆是化石、復活機或進化路線，不是一般野外遭遇。"
+              : "";
+      const rarityNote = row.rarity === "Ultra-Rare"
+        ? "「極稀有」代表遭遇率非常低，不代表一定會生成。"
+        : "";
+      const structureNote = hasExplicitStructureRoute(row)
+        ? "原表也提供建築／召喚路線；可直接點擊本卡的相關建築連結。"
+        : "";
+      return [location, rarity, condition, rarityNote, routeNote, structureNote].filter(Boolean).join(" ");
+    }
+    function langBlock(title, original, translated, full = false) {
+      return `<div class="detail-block${full ? " full" : ""}">
+        <h4>${escapeHtml(title)}</h4>
+        <p class="lang-row original"><span class="lang-label">原文</span>${escapeHtml(original || "—")}</p>
+        <p class="lang-row translation"><span class="lang-label">中文</span>${escapeHtml(translated || "—")}</p>
+      </div>`;
+    }
+    function spawnCard(row, index) {
+      const nameZh = row.nameZh || translatePokemon(row.name);
+      const className = row.category === "ultra-beast" ? "entry ultra" : "entry";
+      const buildings = relatedBuildings(row.name);
+      const buildingLinks = buildings.length
+        ? `<div class="cross-links"><strong>相關建築：</strong>${buildings.map((building) =>
+            anchorLink(`building-${structureSlug(building.structure)}`, `${building.structure}（${translateStructure(building.structure)}）`, "building")
+          ).join("、")}</div>`
+        : "";
+      const structureNote = hasExplicitStructureRoute(row) && !buildings.length
+        ? `<p class="structure-link">這筆資料含結構／祭壇／維度關聯；請切換「神獸建築表」查看對應地點與前置。</p>`
+        : "";
+      const imageSlug = pokemonImageSlug(row.name);
+      const imageAlt = `${row.name}（${nameZh}）`;
+      const spawnTitle = isSpecialSpawnRoute(row.spawnOriginal) ? "自然生成／特殊取得" : "自然生成生態域";
+      return `<details class="${className}" id="pokemon-${pokemonSlug(row.name)}" data-index="${index}">
+        <summary>
+          <div class="entry-heading">
+            <div class="pokemon-thumb">
+              <img class="pokemon-art" loading="lazy" decoding="async" src="https://img.pokemondb.net/artwork/large/${escapeHtml(imageSlug)}.jpg" alt="${escapeHtml(imageAlt)}" onerror="this.hidden=true;this.nextElementSibling.style.display='inline'">
+              <span class="pokemon-art-fallback" aria-hidden="true">✦</span>
+            </div>
+            <div class="entry-title">
+              <h3 class="entry-name">${escapeHtml(row.name)} <span class="zh">（${escapeHtml(nameZh)}）</span></h3>
+              <div class="subline">${escapeHtml(row.generation === "Unspecified" ? "補充分類" : row.generation)}</div>
+            </div>
+          </div>
+          <div class="badges">
+            <span class="badge rarity">${escapeHtml(row.rarity)} · ${escapeHtml(rarityZh(row.rarity))}</span>
+            ${row.category === "ultra-beast" ? '<span class="badge ultra">究極異獸</span>' : '<span class="badge">傳說／幻之</span>'}
+            ${routeBadges(row)}
+          </div>
+        </summary>
+        <div class="entry-body">
+          <div class="detail-grid">
+            ${langBlock(spawnTitle, row.spawnOriginal, translateSpawnLocation(row.spawnOriginal))}
+            ${langBlock("天氣／時間", row.weatherOriginal, translateCondition(row.weatherOriginal))}
+            ${langBlock("其他條件", row.otherOriginal, translateCondition(row.otherOriginal), true)}
+          </div>
+          <div class="natural-box">
+            <h4>自然生成詳細解讀</h4>
+            <p class="lang-row original"><span class="lang-label">原文</span>${escapeHtml(naturalDetailOriginal(row))}</p>
+            <p class="lang-row translation"><span class="lang-label">中文</span>${escapeHtml(naturalDetailZh(row))}</p>
+          </div>
+          ${buildingLinks}
+          ${structureNote}
+        </div>
+      </details>`;
+    }
+    function buildingCard(row, index) {
+      const pokemonLinks = relatedPokemon(row).map((pokemon) =>
+        anchorLink(`pokemon-${pokemonSlug(pokemon.name)}`, `${pokemon.name}（${pokemon.nameZh || translatePokemon(pokemon.name)}）`, "spawn")
+      );
+      const linkedPokemon = pokemonLinks.length
+        ? `<div class="cross-links"><strong>對應神獸：</strong>${pokemonLinks.join("、")}</div>`
+        : "";
+      return `<details class="entry building" id="building-${structureSlug(row.structure)}" data-index="${index}">
+        <summary>
+          <div class="entry-title">
+            <h3 class="entry-name">${escapeHtml(row.structure)} <span class="zh">（${escapeHtml(translateStructure(row.structure))}）</span></h3>
+            <div class="subline">特殊生成建築／召喚地點</div>
+          </div>
+          <div class="badges"><span class="badge build">神獸建築</span></div>
+        </summary>
+        <div class="entry-body">
+          <div class="detail-grid">
+            ${langBlock("對應神獸", row.pokemonOriginal, translatePokemon(row.pokemonOriginal))}
+            ${langBlock("建築生成生態域", row.biomeOriginal, translateBiome(row.biomeOriginal))}
+            ${langBlock("召喚／前置條件", row.extraOriginal, translateCondition(row.extraOriginal), true)}
+          </div>
+          <div class="route-callout">
+            <p><span class="callout-label">Route note / 路線提醒</span></p>
+            <p><strong>English:</strong> Obtain the related item(s) or complete the prerequisite inside/around this structure, then use the structure to encounter or summon the listed Pokémon.</p>
+            <p><strong>中文：</strong>取得此建築內或周邊的相關道具、完成前置後，才能在此建築遇到或召喚列出的神獸。</p>
+          </div>
+          ${linkedPokemon}
+        </div>
+      </details>`;
+    }
+    function searchable(row, building = false) {
+      if (building) {
+        return `${row.structure} ${translateStructure(row.structure)} ${row.pokemonOriginal} ${translatePokemon(row.pokemonOriginal)} ${row.biomeOriginal} ${translateBiome(row.biomeOriginal)} ${row.extraOriginal} ${translateCondition(row.extraOriginal)}`.toLowerCase();
+      }
+      const linkedBuildingText = relatedBuildings(row.name).map((building) =>
+        `${building.structure} ${translateStructure(building.structure)} ${building.extraOriginal} ${translateCondition(building.extraOriginal)}`
+      ).join(" ");
+      return `${row.name} ${row.nameZh} ${row.rarity} ${rarityZh(row.rarity)} ${row.generation} ${row.spawnOriginal} ${translateBiome(row.spawnOriginal)} ${row.weatherOriginal} ${translateCondition(row.weatherOriginal)} ${row.otherOriginal} ${translateCondition(row.otherOriginal)} ${linkedBuildingText}`.toLowerCase();
+    }
+    function matches(row, building = false) {
+      const query = state.query.trim().toLowerCase();
+      if (query && !searchable(row, building).includes(query)) return false;
+      if (!building && state.category !== "all" && row.category !== state.category) return false;
+      if (!building && state.acquisition !== "all" && !routeMatches(row, state.acquisition)) return false;
+      if (!building && state.generation !== "all" && row.generation !== state.generation) return false;
+      return true;
+    }
+    function generationRank(value) {
+      const rank = GENERATION_ORDER.indexOf(value);
+      return rank === -1 ? GENERATION_ORDER.length : rank;
+    }
+    function sortRows(rows, building = false) {
+      return [...rows].sort((a, b) => {
+        if (building) return a.structure.localeCompare(b.structure);
+        if (state.sort === "generation") {
+          const gen = generationRank(a.generation) - generationRank(b.generation);
+          return gen || a.name.localeCompare(b.name);
+        }
+        if (state.sort === "rarity") {
+          return (RARITY_ORDER[a.rarity] ?? 9) - (RARITY_ORDER[b.rarity] ?? 9) || a.name.localeCompare(b.name);
+        }
+        return a.name.localeCompare(b.name);
+      });
+    }
+    function render() {
+      const spawnRows = sortRows(DATA.spawn.filter((row) => matches(row, false)));
+      const buildingRows = sortRows(DATA.buildings.filter((row) => matches(row, true)), true);
+      $("spawn-list").innerHTML = state.section === "spawn"
+        ? (spawnRows.length ? spawnRows.map(spawnCard).join("") : '<div class="empty">找不到符合條件的神獸。試試英文名、中文名、生態域或道具關鍵字。</div>')
+        : "";
+      $("building-list").innerHTML = state.section === "building"
+        ? (buildingRows.length ? buildingRows.map(buildingCard).join("") : '<div class="empty">找不到符合條件的特殊建築。試試建築名、神獸名或生態域。</div>')
+        : "";
+      $("result-count").textContent = `${spawnRows.length} 筆`;
+      $("building-result-count").textContent = `${buildingRows.length} 筆`;
+      $("spawn-panel").hidden = state.section !== "spawn";
+      $("building-panel").hidden = state.section !== "building";
+      const wildOnly = state.section === "spawn" && state.acquisition === "wild";
+      $("spawn-tab").setAttribute("aria-selected", String(state.section === "spawn" && !wildOnly));
+      $("wild-tab").setAttribute("aria-selected", String(wildOnly));
+      $("building-tab").setAttribute("aria-selected", String(state.section === "building"));
+      $("category-filter").disabled = state.section === "building";
+      $("acquisition-filter").disabled = state.section === "building";
+      $("generation-filter").disabled = state.section === "building";
+      $("wild-tab").disabled = state.section === "building";
+    }
+    function generationLabel(generation) {
+      const labels = {
+        "Gen. 1 Kanto": "第 1 世代（關都）",
+        "Gen. 2 Johto": "第 2 世代（城都）",
+        "Gen. 3 Hoenn": "第 3 世代（豐緣）",
+        "Gen. 4 Sinnoh": "第 4 世代（神奧）",
+        "Gen. 5 Unova": "第 5 世代（合眾）",
+        "Gen. 6 Kalos": "第 6 世代（卡洛斯）",
+        "Gen. 7 Alola": "第 7 世代（阿羅拉）",
+        "Gen. 8 Galar／Hisui": "第 8 世代（伽勒爾／洗翠）",
+        "Gen. 9 Paldea": "第 9 世代（帕底亞）",
+        "究極異獸": "究極異獸"
+      };
+      return labels[generation] || "補充分類";
+    }
+    function fillGenerationOptions() {
+      const generations = [...new Set(DATA.spawn.map((row) => row.generation))];
+      for (const generation of GENERATION_ORDER) {
+        if (!generations.includes(generation) || generation === "Unspecified") continue;
+        const option = document.createElement("option");
+        option.value = generation;
+        option.textContent = generationLabel(generation);
+        $("generation-filter").appendChild(option);
+      }
+    }
+    $("legendary-count").textContent = DATA.spawn.filter((row) => row.category === "legendary").length;
+    $("ultra-count").textContent = DATA.spawn.filter((row) => row.category === "ultra-beast").length;
+    $("wild-count").textContent = DATA.spawn.filter((row) => hasWildRoute(row)).length;
+    $("building-count").textContent = DATA.buildings.length;
+    fillGenerationOptions();
+    $("search").addEventListener("input", (event) => { state.query = event.target.value; render(); });
+    $("category-filter").addEventListener("change", (event) => { state.category = event.target.value; render(); });
+    $("acquisition-filter").addEventListener("change", (event) => { state.acquisition = event.target.value; render(); });
+    $("generation-filter").addEventListener("change", (event) => { state.generation = event.target.value; render(); });
+    $("sort-filter").addEventListener("change", (event) => { state.sort = event.target.value; render(); });
+    $("clear").addEventListener("click", () => {
+      state.query = ""; state.category = "all"; state.acquisition = "all"; state.generation = "all"; state.sort = "generation";
+      $("search").value = ""; $("category-filter").value = "all"; $("acquisition-filter").value = "all"; $("generation-filter").value = "all"; $("sort-filter").value = "generation";
+      render();
+      $("search").focus();
+    });
+    $("spawn-tab").addEventListener("click", () => {
+      state.section = "spawn";
+      state.acquisition = "all";
+      $("acquisition-filter").value = "all";
+      render();
+    });
+    $("wild-tab").addEventListener("click", () => {
+      state.section = "spawn";
+      state.acquisition = "wild";
+      $("acquisition-filter").value = "wild";
+      render();
+    });
+    $("building-tab").addEventListener("click", () => { state.section = "building"; render(); });
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("a[data-target-section][data-target-id]");
+      if (!link) return;
+      const targetSection = link.dataset.targetSection;
+      const targetId = link.dataset.targetId;
+      const targetPanel = targetSection === "building" ? "building-panel" : "spawn-panel";
+      if (!$(targetPanel)) return;
+      event.preventDefault();
+      state.section = targetSection === "building" ? "building" : "spawn";
+      render();
+      requestAnimationFrame(() => {
+        const target = $(targetId);
+        if (!target) return;
+        target.open = true;
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        history.replaceState(null, "", `#${targetId}`);
+      });
+    });
+    function openInitialHash() {
+      const hash = window.location.hash.replace(/^#/, "");
+      if (!hash) return;
+      const targetSection = hash.startsWith("building-") ? "building" : "spawn";
+      state.section = targetSection;
+      render();
+      requestAnimationFrame(() => {
+        const target = $(hash);
+        if (target) {
+          target.open = true;
+          target.scrollIntoView({ block: "start" });
+        }
+      });
+    }
+    render();
+    openInitialHash();
+  </script>
+</body>
+</html>
